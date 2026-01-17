@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9ACF1CE42F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */; };
+		9ACF1CE62F1BC4F1003E8163 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */; };
+		9ACF1CE82F1BC4F3003E8163 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */; };
+		9ACF1CEB2F1BC4F3003E8163 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */; };
+		9ACF1CF52F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CF42F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift */; };
+		9ACF1CFF2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CFE2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift */; };
+		9ACF1D012F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1D002F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9ACF1CF12F1BC4F4003E8163 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9ACF1CD82F1BC4F1003E8163 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9ACF1CDF2F1BC4F1003E8163;
+			remoteInfo = TravelPlanRouteMap;
+		};
+		9ACF1CFB2F1BC4F4003E8163 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9ACF1CD82F1BC4F1003E8163 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9ACF1CDF2F1BC4F1003E8163;
+			remoteInfo = TravelPlanRouteMap;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		9ACF1CE02F1BC4F1003E8163 /* TravelPlanRouteMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelPlanRouteMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapApp.swift; sourceTree = "<group>"; };
+		9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9ACF1CF02F1BC4F4003E8163 /* TravelPlanRouteMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelPlanRouteMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9ACF1CF42F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapTests.swift; sourceTree = "<group>"; };
+		9ACF1CFA2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelPlanRouteMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9ACF1CFE2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITests.swift; sourceTree = "<group>"; };
+		9ACF1D002F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITestsLaunchTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9ACF1CDD2F1BC4F1003E8163 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CED2F1BC4F4003E8163 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CF72F1BC4F4003E8163 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9ACF1CD72F1BC4F1003E8163 = {
+			isa = PBXGroup;
+			children = (
+				9ACF1CE22F1BC4F1003E8163 /* TravelPlanRouteMap */,
+				9ACF1CF32F1BC4F4003E8163 /* TravelPlanRouteMapTests */,
+				9ACF1CFD2F1BC4F4003E8163 /* TravelPlanRouteMapUITests */,
+				9ACF1CE12F1BC4F1003E8163 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9ACF1CE12F1BC4F1003E8163 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9ACF1CE02F1BC4F1003E8163 /* TravelPlanRouteMap.app */,
+				9ACF1CF02F1BC4F4003E8163 /* TravelPlanRouteMapTests.xctest */,
+				9ACF1CFA2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9ACF1CE22F1BC4F1003E8163 /* TravelPlanRouteMap */ = {
+			isa = PBXGroup;
+			children = (
+				9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */,
+				9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */,
+				9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */,
+				9ACF1CE92F1BC4F3003E8163 /* Preview Content */,
+			);
+			path = TravelPlanRouteMap;
+			sourceTree = "<group>";
+		};
+		9ACF1CE92F1BC4F3003E8163 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9ACF1CF32F1BC4F4003E8163 /* TravelPlanRouteMapTests */ = {
+			isa = PBXGroup;
+			children = (
+				9ACF1CF42F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift */,
+			);
+			path = TravelPlanRouteMapTests;
+			sourceTree = "<group>";
+		};
+		9ACF1CFD2F1BC4F4003E8163 /* TravelPlanRouteMapUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9ACF1CFE2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift */,
+				9ACF1D002F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift */,
+			);
+			path = TravelPlanRouteMapUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9ACF1CDF2F1BC4F1003E8163 /* TravelPlanRouteMap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9ACF1D042F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMap" */;
+			buildPhases = (
+				9ACF1CDC2F1BC4F1003E8163 /* Sources */,
+				9ACF1CDD2F1BC4F1003E8163 /* Frameworks */,
+				9ACF1CDE2F1BC4F1003E8163 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TravelPlanRouteMap;
+			productName = TravelPlanRouteMap;
+			productReference = 9ACF1CE02F1BC4F1003E8163 /* TravelPlanRouteMap.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9ACF1CEF2F1BC4F4003E8163 /* TravelPlanRouteMapTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9ACF1D072F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMapTests" */;
+			buildPhases = (
+				9ACF1CEC2F1BC4F4003E8163 /* Sources */,
+				9ACF1CED2F1BC4F4003E8163 /* Frameworks */,
+				9ACF1CEE2F1BC4F4003E8163 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9ACF1CF22F1BC4F4003E8163 /* PBXTargetDependency */,
+			);
+			name = TravelPlanRouteMapTests;
+			productName = TravelPlanRouteMapTests;
+			productReference = 9ACF1CF02F1BC4F4003E8163 /* TravelPlanRouteMapTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9ACF1CF92F1BC4F4003E8163 /* TravelPlanRouteMapUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9ACF1D0A2F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMapUITests" */;
+			buildPhases = (
+				9ACF1CF62F1BC4F4003E8163 /* Sources */,
+				9ACF1CF72F1BC4F4003E8163 /* Frameworks */,
+				9ACF1CF82F1BC4F4003E8163 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9ACF1CFC2F1BC4F4003E8163 /* PBXTargetDependency */,
+			);
+			name = TravelPlanRouteMapUITests;
+			productName = TravelPlanRouteMapUITests;
+			productReference = 9ACF1CFA2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9ACF1CD82F1BC4F1003E8163 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1540;
+				LastUpgradeCheck = 1540;
+				TargetAttributes = {
+					9ACF1CDF2F1BC4F1003E8163 = {
+						CreatedOnToolsVersion = 15.4;
+					};
+					9ACF1CEF2F1BC4F4003E8163 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 9ACF1CDF2F1BC4F1003E8163;
+					};
+					9ACF1CF92F1BC4F4003E8163 = {
+						CreatedOnToolsVersion = 15.4;
+						TestTargetID = 9ACF1CDF2F1BC4F1003E8163;
+					};
+				};
+			};
+			buildConfigurationList = 9ACF1CDB2F1BC4F1003E8163 /* Build configuration list for PBXProject "TravelPlanRouteMap" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9ACF1CD72F1BC4F1003E8163;
+			productRefGroup = 9ACF1CE12F1BC4F1003E8163 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9ACF1CDF2F1BC4F1003E8163 /* TravelPlanRouteMap */,
+				9ACF1CEF2F1BC4F4003E8163 /* TravelPlanRouteMapTests */,
+				9ACF1CF92F1BC4F4003E8163 /* TravelPlanRouteMapUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9ACF1CDE2F1BC4F1003E8163 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ACF1CEB2F1BC4F3003E8163 /* Preview Assets.xcassets in Resources */,
+				9ACF1CE82F1BC4F3003E8163 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CEE2F1BC4F4003E8163 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CF82F1BC4F4003E8163 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9ACF1CDC2F1BC4F1003E8163 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ACF1CE62F1BC4F1003E8163 /* ContentView.swift in Sources */,
+				9ACF1CE42F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CEC2F1BC4F4003E8163 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ACF1CF52F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CF62F1BC4F4003E8163 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9ACF1D012F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */,
+				9ACF1CFF2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9ACF1CF22F1BC4F4003E8163 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9ACF1CDF2F1BC4F1003E8163 /* TravelPlanRouteMap */;
+			targetProxy = 9ACF1CF12F1BC4F4003E8163 /* PBXContainerItemProxy */;
+		};
+		9ACF1CFC2F1BC4F4003E8163 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9ACF1CDF2F1BC4F1003E8163 /* TravelPlanRouteMap */;
+			targetProxy = 9ACF1CFB2F1BC4F4003E8163 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9ACF1D022F1BC4F4003E8163 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9ACF1D032F1BC4F4003E8163 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9ACF1D052F1BC4F4003E8163 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TravelPlanRouteMap/Preview Content\"";
+				DEVELOPMENT_TEAM = T3F7SD4834;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = joker.TravelPlanRouteMap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9ACF1D062F1BC4F4003E8163 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"TravelPlanRouteMap/Preview Content\"";
+				DEVELOPMENT_TEAM = T3F7SD4834;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = joker.TravelPlanRouteMap;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9ACF1D082F1BC4F4003E8163 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T3F7SD4834;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = joker.TravelPlanRouteMapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TravelPlanRouteMap.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TravelPlanRouteMap";
+			};
+			name = Debug;
+		};
+		9ACF1D092F1BC4F4003E8163 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T3F7SD4834;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = joker.TravelPlanRouteMapTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TravelPlanRouteMap.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TravelPlanRouteMap";
+			};
+			name = Release;
+		};
+		9ACF1D0B2F1BC4F4003E8163 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T3F7SD4834;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = joker.TravelPlanRouteMapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TravelPlanRouteMap;
+			};
+			name = Debug;
+		};
+		9ACF1D0C2F1BC4F4003E8163 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = T3F7SD4834;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = joker.TravelPlanRouteMapUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TravelPlanRouteMap;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9ACF1CDB2F1BC4F1003E8163 /* Build configuration list for PBXProject "TravelPlanRouteMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ACF1D022F1BC4F4003E8163 /* Debug */,
+				9ACF1D032F1BC4F4003E8163 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9ACF1D042F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ACF1D052F1BC4F4003E8163 /* Debug */,
+				9ACF1D062F1BC4F4003E8163 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9ACF1D072F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMapTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ACF1D082F1BC4F4003E8163 /* Debug */,
+				9ACF1D092F1BC4F4003E8163 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9ACF1D0A2F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMapUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9ACF1D0B2F1BC4F4003E8163 /* Debug */,
+				9ACF1D0C2F1BC4F4003E8163 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9ACF1CD82F1BC4F1003E8163 /* Project object */;
+}
