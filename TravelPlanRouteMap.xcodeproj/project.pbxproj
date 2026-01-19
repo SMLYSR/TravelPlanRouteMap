@@ -7,13 +7,27 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9A8FC74A2F1E92160025E407 /* DataPersistencePropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73A2F1E92160025E407 /* DataPersistencePropertyTests.swift */; };
+		9A8FC74B2F1E92160025E407 /* InputValidationPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73B2F1E92160025E407 /* InputValidationPropertyTests.swift */; };
+		9A8FC74C2F1E92160025E407 /* RoutePlanningPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73C2F1E92160025E407 /* RoutePlanningPropertyTests.swift */; };
+		9A8FC74D2F1E92160025E407 /* AIAgentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73E2F1E92160025E407 /* AIAgentTests.swift */; };
+		9A8FC74E2F1E92160025E407 /* ErrorHandlerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73F2F1E92160025E407 /* ErrorHandlerTests.swift */; };
+		9A8FC74F2F1E92160025E407 /* InputValidationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7402F1E92160025E407 /* InputValidationTests.swift */; };
+		9A8FC7502F1E92160025E407 /* IntegrationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7412F1E92160025E407 /* IntegrationTests.swift */; };
+		9A8FC7512F1E92160025E407 /* MapServicePropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7422F1E92160025E407 /* MapServicePropertyTests.swift */; };
+		9A8FC7522F1E92170025E407 /* MapServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7432F1E92160025E407 /* MapServiceTests.swift */; };
+		9A8FC7532F1E92170025E407 /* PromptModuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7442F1E92160025E407 /* PromptModuleTests.swift */; };
+		9A8FC7542F1E92170025E407 /* ResultViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7452F1E92160025E407 /* ResultViewModelTests.swift */; };
+		9A8FC7552F1E92170025E407 /* RoutePlanningServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7462F1E92160025E407 /* RoutePlanningServiceTests.swift */; };
+		9A8FC7562F1E92170025E407 /* TravelPlanRepositoryTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7472F1E92160025E407 /* TravelPlanRepositoryTests.swift */; };
+		9A8FC7572F1E92170025E407 /* TravelPlanRouteMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7482F1E92160025E407 /* TravelPlanRouteMapTests.swift */; };
+		9A8FC75C2F1E922E0025E407 /* FlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7582F1E922E0025E407 /* FlowUITests.swift */; };
+		9A8FC75D2F1E922E0025E407 /* TravelPlanRouteMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7592F1E922E0025E407 /* TravelPlanRouteMapUITests.swift */; };
+		9A8FC75E2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC75A2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift */; };
 		9ACF1CE42F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */; };
 		9ACF1CE62F1BC4F1003E8163 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */; };
 		9ACF1CE82F1BC4F3003E8163 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */; };
 		9ACF1CEB2F1BC4F3003E8163 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */; };
-		9ACF1CF52F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CF42F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift */; };
-		9ACF1CFF2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CFE2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift */; };
-		9ACF1D012F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1D002F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -34,16 +48,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		9A8FC73A2F1E92160025E407 /* DataPersistencePropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPersistencePropertyTests.swift; sourceTree = "<group>"; };
+		9A8FC73B2F1E92160025E407 /* InputValidationPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputValidationPropertyTests.swift; sourceTree = "<group>"; };
+		9A8FC73C2F1E92160025E407 /* RoutePlanningPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePlanningPropertyTests.swift; sourceTree = "<group>"; };
+		9A8FC73E2F1E92160025E407 /* AIAgentTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIAgentTests.swift; sourceTree = "<group>"; };
+		9A8FC73F2F1E92160025E407 /* ErrorHandlerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandlerTests.swift; sourceTree = "<group>"; };
+		9A8FC7402F1E92160025E407 /* InputValidationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputValidationTests.swift; sourceTree = "<group>"; };
+		9A8FC7412F1E92160025E407 /* IntegrationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntegrationTests.swift; sourceTree = "<group>"; };
+		9A8FC7422F1E92160025E407 /* MapServicePropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapServicePropertyTests.swift; sourceTree = "<group>"; };
+		9A8FC7432F1E92160025E407 /* MapServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapServiceTests.swift; sourceTree = "<group>"; };
+		9A8FC7442F1E92160025E407 /* PromptModuleTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromptModuleTests.swift; sourceTree = "<group>"; };
+		9A8FC7452F1E92160025E407 /* ResultViewModelTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewModelTests.swift; sourceTree = "<group>"; };
+		9A8FC7462F1E92160025E407 /* RoutePlanningServiceTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePlanningServiceTests.swift; sourceTree = "<group>"; };
+		9A8FC7472F1E92160025E407 /* TravelPlanRepositoryTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRepositoryTests.swift; sourceTree = "<group>"; };
+		9A8FC7482F1E92160025E407 /* TravelPlanRouteMapTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapTests.swift; sourceTree = "<group>"; };
+		9A8FC7582F1E922E0025E407 /* FlowUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowUITests.swift; sourceTree = "<group>"; };
+		9A8FC7592F1E922E0025E407 /* TravelPlanRouteMapUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITests.swift; sourceTree = "<group>"; };
+		9A8FC75A2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		9ACF1CE02F1BC4F1003E8163 /* TravelPlanRouteMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelPlanRouteMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapApp.swift; sourceTree = "<group>"; };
 		9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9ACF1CF02F1BC4F4003E8163 /* TravelPlanRouteMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelPlanRouteMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ACF1CF42F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapTests.swift; sourceTree = "<group>"; };
 		9ACF1CFA2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelPlanRouteMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ACF1CFE2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITests.swift; sourceTree = "<group>"; };
-		9ACF1D002F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -71,12 +99,51 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9A8FC73D2F1E92160025E407 /* PropertyTests */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC73A2F1E92160025E407 /* DataPersistencePropertyTests.swift */,
+				9A8FC73B2F1E92160025E407 /* InputValidationPropertyTests.swift */,
+				9A8FC73C2F1E92160025E407 /* RoutePlanningPropertyTests.swift */,
+			);
+			path = PropertyTests;
+			sourceTree = "<group>";
+		};
+		9A8FC7492F1E92160025E407 /* TravelPlanRouteMapTests */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC73D2F1E92160025E407 /* PropertyTests */,
+				9A8FC73E2F1E92160025E407 /* AIAgentTests.swift */,
+				9A8FC73F2F1E92160025E407 /* ErrorHandlerTests.swift */,
+				9A8FC7402F1E92160025E407 /* InputValidationTests.swift */,
+				9A8FC7412F1E92160025E407 /* IntegrationTests.swift */,
+				9A8FC7422F1E92160025E407 /* MapServicePropertyTests.swift */,
+				9A8FC7432F1E92160025E407 /* MapServiceTests.swift */,
+				9A8FC7442F1E92160025E407 /* PromptModuleTests.swift */,
+				9A8FC7452F1E92160025E407 /* ResultViewModelTests.swift */,
+				9A8FC7462F1E92160025E407 /* RoutePlanningServiceTests.swift */,
+				9A8FC7472F1E92160025E407 /* TravelPlanRepositoryTests.swift */,
+				9A8FC7482F1E92160025E407 /* TravelPlanRouteMapTests.swift */,
+			);
+			path = TravelPlanRouteMapTests;
+			sourceTree = "<group>";
+		};
+		9A8FC75B2F1E922E0025E407 /* TravelPlanRouteMapUITests */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC7582F1E922E0025E407 /* FlowUITests.swift */,
+				9A8FC7592F1E922E0025E407 /* TravelPlanRouteMapUITests.swift */,
+				9A8FC75A2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift */,
+			);
+			path = TravelPlanRouteMapUITests;
+			sourceTree = "<group>";
+		};
 		9ACF1CD72F1BC4F1003E8163 = {
 			isa = PBXGroup;
 			children = (
+				9A8FC75B2F1E922E0025E407 /* TravelPlanRouteMapUITests */,
+				9A8FC7492F1E92160025E407 /* TravelPlanRouteMapTests */,
 				9ACF1CE22F1BC4F1003E8163 /* TravelPlanRouteMap */,
-				9ACF1CF32F1BC4F4003E8163 /* TravelPlanRouteMapTests */,
-				9ACF1CFD2F1BC4F4003E8163 /* TravelPlanRouteMapUITests */,
 				9ACF1CE12F1BC4F1003E8163 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -108,23 +175,6 @@
 				9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
-			sourceTree = "<group>";
-		};
-		9ACF1CF32F1BC4F4003E8163 /* TravelPlanRouteMapTests */ = {
-			isa = PBXGroup;
-			children = (
-				9ACF1CF42F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift */,
-			);
-			path = TravelPlanRouteMapTests;
-			sourceTree = "<group>";
-		};
-		9ACF1CFD2F1BC4F4003E8163 /* TravelPlanRouteMapUITests */ = {
-			isa = PBXGroup;
-			children = (
-				9ACF1CFE2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift */,
-				9ACF1D002F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift */,
-			);
-			path = TravelPlanRouteMapUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -257,8 +307,25 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A8FC74B2F1E92160025E407 /* InputValidationPropertyTests.swift in Sources */,
+				9A8FC7572F1E92170025E407 /* TravelPlanRouteMapTests.swift in Sources */,
 				9ACF1CE62F1BC4F1003E8163 /* ContentView.swift in Sources */,
+				9A8FC75E2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */,
+				9A8FC7522F1E92170025E407 /* MapServiceTests.swift in Sources */,
 				9ACF1CE42F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift in Sources */,
+				9A8FC74F2F1E92160025E407 /* InputValidationTests.swift in Sources */,
+				9A8FC7562F1E92170025E407 /* TravelPlanRepositoryTests.swift in Sources */,
+				9A8FC74E2F1E92160025E407 /* ErrorHandlerTests.swift in Sources */,
+				9A8FC7552F1E92170025E407 /* RoutePlanningServiceTests.swift in Sources */,
+				9A8FC7542F1E92170025E407 /* ResultViewModelTests.swift in Sources */,
+				9A8FC7512F1E92160025E407 /* MapServicePropertyTests.swift in Sources */,
+				9A8FC74D2F1E92160025E407 /* AIAgentTests.swift in Sources */,
+				9A8FC74C2F1E92160025E407 /* RoutePlanningPropertyTests.swift in Sources */,
+				9A8FC75D2F1E922E0025E407 /* TravelPlanRouteMapUITests.swift in Sources */,
+				9A8FC7532F1E92170025E407 /* PromptModuleTests.swift in Sources */,
+				9A8FC75C2F1E922E0025E407 /* FlowUITests.swift in Sources */,
+				9A8FC74A2F1E92160025E407 /* DataPersistencePropertyTests.swift in Sources */,
+				9A8FC7502F1E92160025E407 /* IntegrationTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -266,7 +333,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9ACF1CF52F1BC4F4003E8163 /* TravelPlanRouteMapTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,8 +340,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9ACF1D012F1BC4F4003E8163 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */,
-				9ACF1CFF2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
