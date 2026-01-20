@@ -11,12 +11,13 @@ enum NavigationState {
 }
 
 /// 主视图 - 管理导航流程
+@MainActor
 struct MainView: View {
     @State private var navigationState: NavigationState = .home
     @State private var selectedDestination: GeocodingResult?
     @State private var selectedTravelMode: TravelMode = .driving
     @State private var attractionViewModel: AttractionViewModel?
-    @State private var resultViewModel = ResultViewModel()
+    @StateObject private var resultViewModel = ResultViewModel()
     
     var body: some View {
         ZStack {
@@ -70,7 +71,7 @@ struct MainView: View {
                     AttractionInputView(
                         viewModel: vm,
                         onNext: {
-                            resultViewModel = ResultViewModel()
+                            resultViewModel.clear()
                             navigationState = .result
                         },
                         onBack: {
@@ -97,6 +98,9 @@ struct MainView: View {
                             startNewPlan()
                         }
                     )
+                    .onAppear {
+                        resultViewModel.clear()
+                    }
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
@@ -126,7 +130,7 @@ struct MainView: View {
         selectedDestination = nil
         selectedTravelMode = .driving
         attractionViewModel = nil
-        resultViewModel = ResultViewModel()
+        resultViewModel.clear()
         navigationState = .destination
     }
     

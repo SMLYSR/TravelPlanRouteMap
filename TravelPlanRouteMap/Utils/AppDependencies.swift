@@ -15,12 +15,10 @@ class AppDependencies {
         // 初始化提示词模块
         self.promptProvider = PromptModule()
         
-        // 初始化地理编码服务
-        // 在实际应用中，这里应该使用 AMapGeocodingService
-        self.geocodingService = MockGeocodingService()
+        // 初始化地理编码服务（使用高德地图）
+        self.geocodingService = AMapGeocodingService()
         
         // 初始化 AI Agent
-        // 在实际应用中，如果配置了 API Key，使用 OpenAIAgent
         if !Config.openAIKey.isEmpty {
             self.aiAgent = OpenAIAgent(
                 apiKey: Config.openAIKey,
@@ -34,12 +32,11 @@ class AppDependencies {
         self.routePlanningService = DefaultRoutePlanningService(
             aiAgent: aiAgent,
             promptProvider: promptProvider,
-            geocoder: geocodingService
+            geocodingService: geocodingService
         )
         
-        // 初始化地图服务
-        // 在实际应用中，这里应该使用 AMapService
-        self.mapService = MockMapService()
+        // 初始化地图服务（使用高德地图）
+        self.mapService = AMapService()
         
         // 初始化数据仓库
         self.repository = LocalTravelPlanRepository()

@@ -1,17 +1,12 @@
 import Foundation
 import UIKit
-// 注意：实际使用时需要导入高德地图 SDK
-// import MAMapKit
-// import AMapFoundationKit
-// import AMapSearchKit
+import MAMapKit
+import AMapFoundationKit
 
 /// 高德地图服务实现
-/// 注意：此实现需要集成高德地图 SDK 才能正常工作
-/// SDK 文档：https://lbs.amap.com/api/ios-sdk/summary
-class AMapService: MapService {
+class AMapService: NSObject, MapService {
     
-    // 在实际实现中，这里应该是 MAMapView
-    private var mapView: UIView?
+    private var mapView: MAMapView?
     private var currentRegion: MapRegion?
     private var attractions: [Attraction] = []
     private var routePath: [Coordinate] = []
@@ -22,78 +17,79 @@ class AMapService: MapService {
     func displayMap(in view: UIView, region: MapRegion) {
         currentRegion = region
         
-        // 实际实现：
-        // let map = MAMapView(frame: view.bounds)
-        // configureMapStyle(map)
-        // map.centerCoordinate = CLLocationCoordinate2D(
-        //     latitude: region.center.latitude,
-        //     longitude: region.center.longitude
-        // )
-        // map.setZoomLevel(12, animated: false)
-        // view.addSubview(map)
-        // self.mapView = map
+        let map = MAMapView(frame: view.bounds)
+        map.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        map.delegate = self
         
-        // 占位实现
-        let placeholderView = createPlaceholderMapView(frame: view.bounds)
-        view.addSubview(placeholderView)
-        self.mapView = placeholderView
+        // 配置地图样式
+        configureMapStyle(map)
+        
+        // 设置中心点和缩放级别
+        map.centerCoordinate = CLLocationCoordinate2D(
+            latitude: region.center.latitude,
+            longitude: region.center.longitude
+        )
+        map.zoomLevel = 12
+        
+        view.addSubview(map)
+        self.mapView = map
     }
     
     func addAttractionMarkers(_ attractions: [Attraction], ordered: Bool) {
         self.attractions = attractions
         
-        // 实际实现：
-        // guard let mapView = mapView as? MAMapView else { return }
-        // 
-        // for (index, attraction) in attractions.enumerated() {
-        //     guard let coordinate = attraction.coordinate else { continue }
-        //     
-        //     let annotation = MAPointAnnotation()
-        //     annotation.coordinate = CLLocationCoordinate2D(
-        //         latitude: coordinate.latitude,
-        //         longitude: coordinate.longitude
-        //     )
-        //     annotation.title = ordered ? "\(index + 1). \(attraction.name)" : attraction.name
-        //     annotation.subtitle = attraction.address
-        //     mapView.addAnnotation(annotation)
-        // }
+        guard let mapView = mapView else { return }
+        
+        for (index, attraction) in attractions.enumerated() {
+            guard let coordinate = attraction.coordinate else { continue }
+            
+            let annotation = MAPointAnnotation()
+            annotation.coordinate = CLLocationCoordinate2D(
+                latitude: coordinate.latitude,
+                longitude: coordinate.longitude
+            )
+            annotation.title = ordered ? "\(index + 1). \(attraction.name)" : attraction.name
+            annotation.subtitle = attraction.address
+            mapView.addAnnotation(annotation)
+        }
     }
     
     func drawRoute(_ route: [Coordinate]) {
         self.routePath = route
         
-        // 实际实现：
-        // guard let mapView = mapView as? MAMapView else { return }
-        // 
-        // let coordinates = route.map { coord in
-        //     CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
-        // }
-        // let polyline = MAPolyline(coordinates: coordinates, count: UInt(coordinates.count))
-        // mapView.add(polyline)
+        guard let mapView = mapView, route.count >= 2 else { return }
+        
+        var coordinates = route.map { coord in
+            CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
+        }
+        
+        let polyline = MAPolyline(coordinates: &coordinates, count: UInt(coordinates.count))
+        mapView.add(polyline)
     }
     
     func addAccommodationZones(_ zones: [AccommodationZone]) {
         self.accommodationZones = zones
         
-        // 实际实现：
-        // guard let mapView = mapView as? MAMapView else { return }
-        // 
-        // for zone in zones {
-        //     let circle = MACircle(
-        //         center: CLLocationCoordinate2D(
-        //             latitude: zone.center.latitude,
-        //             longitude: zone.center.longitude
-        //         ),
-        //         radius: zone.radius
-        //     )
-        //     mapView.add(circle)
-        // }
+        guard let mapView = mapView else { return }
+        
+        for zone in zones {
+            let circle = MACircle(
+                center: CLLocationCoordinate2D(
+                    latitude: zone.center.latitude,
+                    longitude: zone.center.longitude
+                ),
+                radius: zone.radius
+            )
+            mapView.add(circle)
+        }
     }
     
     func fitMapToShowAllElements() {
-        // 实际实现：
-        // guard let mapView = mapView as? MAMapView else { return }
-        // mapView.showAnnotations(mapView.annotations, animated: true)
+        guard let mapView = mapView else { return }
+        
+        if let annotations = mapView.annotations, !annotations.isEmpty {
+            mapView.showAnnotations(annotations, animated: true)
+        }
     }
     
     func clearAllAnnotations() {
@@ -101,56 +97,31 @@ class AMapService: MapService {
         routePath = []
         accommodationZones = []
         
-        // 实际实现：
-        // guard let mapView = mapView as? MAMapView else { return }
-        // mapView.removeAnnotations(mapView.annotations)
-        // mapView.removeOverlays(mapView.overlays)
+        guard let mapView = mapView else { return }
+        
+        if let annotations = mapView.annotations {
+            mapView.removeAnnotations(annotations)
+        }
+        if let overlays = mapView.overlays {
+            mapView.removeOverlays(overlays)
+        }
     }
     
     // MARK: - Private Methods
     
     /// 配置地图样式（基于 UI/UX 指南 5.1）
-    private func configureMapStyle(_ mapView: Any) {
-        // 实际实现：
-        // guard let map = mapView as? MAMapView else { return }
-        // map.mapType = .standard
-        // map.showsBuildings = true
-        // map.showsCompass = true
-        // map.showsScale = true
-        // 
-        // // 可选：自定义地图配色
-        // // let styleOptions = MAMapCustomStyleOptions()
-        // // styleOptions.styleDataPath = "style.data"
-        // // map.setCustomMapStyleOptions(styleOptions)
-    }
-    
-    /// 创建占位地图视图（用于开发阶段）
-    private func createPlaceholderMapView(frame: CGRect) -> UIView {
-        let view = UIView(frame: frame)
-        view.backgroundColor = UIColor(hex: "E5E7EB")
-        
-        let label = UILabel()
-        label.text = "地图视图\n（需要集成高德地图 SDK）"
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.textColor = UIColor(hex: "6B7280")
-        label.font = .systemFont(ofSize: 16)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(label)
-        NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        ])
-        
-        return view
+    private func configureMapStyle(_ map: MAMapView) {
+        map.mapType = .standard
+        map.isShowsBuildings = true
+        map.showsCompass = true
+        map.showsScale = true
+        map.isRotateEnabled = false
+        map.isRotateCameraEnabled = false
     }
 }
 
-// MARK: - MAMapViewDelegate Extension
-// 实际实现时需要实现 MAMapViewDelegate 协议
+// MARK: - MAMapViewDelegate
 
-/*
 extension AMapService: MAMapViewDelegate {
     
     /// 自定义景点标记视图（基于 UI/UX 指南 5.2）
@@ -158,36 +129,92 @@ extension AMapService: MAMapViewDelegate {
         guard annotation is MAPointAnnotation else { return nil }
         
         let identifier = "AttractionAnnotation"
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? AttractionAnnotationView
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier)
         
         if annotationView == nil {
-            annotationView = AttractionAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView = MAAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
         }
         
-        annotationView?.annotation = annotation
+        // 创建自定义标记视图
+        let customView = createCustomAnnotationView(for: annotation)
+        annotationView?.image = customView.asImage()
+        annotationView?.centerOffset = CGPoint(x: 0, y: -20)
+        
         return annotationView
     }
     
     /// 自定义路线和区域样式（基于 UI/UX 指南 5.3, 5.4）
     func mapView(_ mapView: MAMapView!, rendererFor overlay: MAOverlay!) -> MAOverlayRenderer! {
-        if overlay is MAPolyline {
-            let renderer = MAPolylineRenderer(overlay: overlay)
-            renderer.lineWidth = 6
-            renderer.strokeColor = UIColor(hex: "06B6D4")  // 主色（天空蓝）
-            renderer.lineJoinType = .round
-            renderer.lineCapType = .round
+        if let polyline = overlay as? MAPolyline {
+            let renderer = MAPolylineRenderer(polyline: polyline)
+            renderer?.lineWidth = 6
+            renderer?.strokeColor = UIColor(hex: "06B6D4")  // 主色（天空蓝）
+            renderer?.lineJoinType = kMALineJoinRound
+            renderer?.lineCapType = kMALineCapRound
             return renderer
         }
         
-        if overlay is MACircle {
-            let renderer = MACircleRenderer(overlay: overlay)
-            renderer.fillColor = UIColor(hex: "EC4899").withAlphaComponent(0.15)  // 粉红色，15% 透明度
-            renderer.strokeColor = UIColor(hex: "EC4899")  // 粉红色边框
-            renderer.lineWidth = 2
+        if let circle = overlay as? MACircle {
+            let renderer = MACircleRenderer(circle: circle)
+            renderer?.fillColor = UIColor(hex: "EC4899").withAlphaComponent(0.15)  // 粉红色，15% 透明度
+            renderer?.strokeColor = UIColor(hex: "EC4899")  // 粉红色边框
+            renderer?.lineWidth = 2
             return renderer
         }
         
         return nil
     }
+    
+    /// 创建自定义标注视图
+    private func createCustomAnnotationView(for annotation: MAAnnotation) -> UIView {
+        let size: CGFloat = 40
+        let view = UIView(frame: CGRect(x: 0, y: 0, width: size, height: size))
+        
+        // 渐变背景
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = view.bounds
+        gradientLayer.colors = [
+            UIColor(hex: "06B6D4").cgColor,
+            UIColor(hex: "0EA5E9").cgColor
+        ]
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        gradientLayer.cornerRadius = size / 2
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        
+        // 序号标签
+        let label = UILabel(frame: view.bounds)
+        label.textAlignment = .center
+        label.font = .systemFont(ofSize: 16, weight: .bold)
+        label.textColor = .white
+        
+        // 从标题中提取序号
+        if let title = annotation.title, let firstChar = title?.first, firstChar.isNumber {
+            label.text = String(firstChar)
+        } else {
+            label.text = "•"
+        }
+        view.addSubview(label)
+        
+        // 阴影
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowOpacity = 0.2
+        view.layer.shadowOffset = CGSize(width: 0, height: 2)
+        view.layer.shadowRadius = 4
+        view.layer.cornerRadius = size / 2
+        
+        return view
+    }
 }
-*/
+
+// MARK: - UIView Extension
+
+private extension UIView {
+    func asImage() -> UIImage {
+        let renderer = UIGraphicsImageRenderer(bounds: bounds)
+        return renderer.image { rendererContext in
+            layer.render(in: rendererContext.cgContext)
+        }
+    }
+}

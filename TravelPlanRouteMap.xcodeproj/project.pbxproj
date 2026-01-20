@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		475573524B02443BD1238D4A /* libPods-TravelPlanRouteMapTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = D9284AFCBC76F0DF6E37BDFE /* libPods-TravelPlanRouteMapTests.a */; };
+		8268AD6E490C567BB8848519 /* libPods-TravelPlanRouteMapUITests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C018BFA84B1304920A216FC9 /* libPods-TravelPlanRouteMapUITests.a */; };
 		9A8FC74A2F1E92160025E407 /* DataPersistencePropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73A2F1E92160025E407 /* DataPersistencePropertyTests.swift */; };
 		9A8FC74B2F1E92160025E407 /* InputValidationPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73B2F1E92160025E407 /* InputValidationPropertyTests.swift */; };
 		9A8FC74C2F1E92160025E407 /* RoutePlanningPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC73C2F1E92160025E407 /* RoutePlanningPropertyTests.swift */; };
@@ -24,10 +26,56 @@
 		9A8FC75C2F1E922E0025E407 /* FlowUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7582F1E922E0025E407 /* FlowUITests.swift */; };
 		9A8FC75D2F1E922E0025E407 /* TravelPlanRouteMapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7592F1E922E0025E407 /* TravelPlanRouteMapUITests.swift */; };
 		9A8FC75E2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC75A2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift */; };
-		9ACF1CE42F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */; };
-		9ACF1CE62F1BC4F1003E8163 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */; };
-		9ACF1CE82F1BC4F3003E8163 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */; };
-		9ACF1CEB2F1BC4F3003E8163 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */; };
+		9A8FC7992F1E928C0025E407 /* AccommodationZone.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC75F2F1E928C0025E407 /* AccommodationZone.swift */; };
+		9A8FC79A2F1E928C0025E407 /* Attraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7602F1E928C0025E407 /* Attraction.swift */; };
+		9A8FC79B2F1E928C0025E407 /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7612F1E928C0025E407 /* Coordinate.swift */; };
+		9A8FC79C2F1E928C0025E407 /* GeocodingResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7622F1E928C0025E407 /* GeocodingResult.swift */; };
+		9A8FC79D2F1E928C0025E407 /* MapRegion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7632F1E928C0025E407 /* MapRegion.swift */; };
+		9A8FC79E2F1E928C0025E407 /* OptimizedRoute.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7642F1E928C0025E407 /* OptimizedRoute.swift */; };
+		9A8FC79F2F1E928C0025E407 /* TravelMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7652F1E928C0025E407 /* TravelMode.swift */; };
+		9A8FC7A02F1E928C0025E407 /* TravelPlan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7662F1E928C0025E407 /* TravelPlan.swift */; };
+		9A8FC7A12F1E928C0025E407 /* TravelPlanError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7672F1E928C0025E407 /* TravelPlanError.swift */; };
+		9A8FC7A22F1E928C0025E407 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FC7692F1E928C0025E407 /* Preview Assets.xcassets */; };
+		9A8FC7A32F1E928C0025E407 /* AIAgent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC76B2F1E928C0025E407 /* AIAgent.swift */; };
+		9A8FC7A42F1E928C0025E407 /* AMapGeocodingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC76C2F1E928C0025E407 /* AMapGeocodingService.swift */; };
+		9A8FC7A52F1E928C0025E407 /* AMapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC76D2F1E928C0025E407 /* AMapService.swift */; };
+		9A8FC7A62F1E928C0025E407 /* GeocodingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC76E2F1E928C0025E407 /* GeocodingService.swift */; };
+		9A8FC7A72F1E928C0025E407 /* MapService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC76F2F1E928C0025E407 /* MapService.swift */; };
+		9A8FC7A82F1E928C0025E407 /* PromptModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7702F1E928C0025E407 /* PromptModule.swift */; };
+		9A8FC7A92F1E928C0025E407 /* RoutePlanningService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7712F1E928C0025E407 /* RoutePlanningService.swift */; };
+		9A8FC7AA2F1E928C0025E407 /* TravelPlanRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7722F1E928C0025E407 /* TravelPlanRepository.swift */; };
+		9A8FC7AB2F1E928C0025E407 /* AnimationDuration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7742F1E928C0025E407 /* AnimationDuration.swift */; };
+		9A8FC7AC2F1E928C0025E407 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7752F1E928C0025E407 /* AppColors.swift */; };
+		9A8FC7AD2F1E928C0025E407 /* AppDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7762F1E928C0025E407 /* AppDependencies.swift */; };
+		9A8FC7AE2F1E928C0025E407 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7772F1E928C0025E407 /* Config.swift */; };
+		9A8FC7AF2F1E928C0025E407 /* ErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7782F1E928C0025E407 /* ErrorHandler.swift */; };
+		9A8FC7B02F1E928C0025E407 /* HapticFeedback.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7792F1E928C0025E407 /* HapticFeedback.swift */; };
+		9A8FC7B12F1E928C0025E407 /* Spacing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC77A2F1E928C0025E407 /* Spacing.swift */; };
+		9A8FC7B22F1E928C0025E407 /* AttractionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC77C2F1E928C0025E407 /* AttractionViewModel.swift */; };
+		9A8FC7B32F1E928C0025E407 /* DestinationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC77D2F1E928C0025E407 /* DestinationViewModel.swift */; };
+		9A8FC7B42F1E928C0025E407 /* HistoryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC77E2F1E928C0025E407 /* HistoryViewModel.swift */; };
+		9A8FC7B52F1E928C0025E407 /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC77F2F1E928C0025E407 /* ResultViewModel.swift */; };
+		9A8FC7B62F1E928C0025E407 /* AttractionAnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7812F1E928C0025E407 /* AttractionAnnotationView.swift */; };
+		9A8FC7B72F1E928C0025E407 /* AttractionCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7822F1E928C0025E407 /* AttractionCard.swift */; };
+		9A8FC7B82F1E928C0025E407 /* CustomNavigationBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7832F1E928C0025E407 /* CustomNavigationBar.swift */; };
+		9A8FC7B92F1E928C0025E407 /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7842F1E928C0025E407 /* CustomTextField.swift */; };
+		9A8FC7BA2F1E928C0025E407 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7852F1E928C0025E407 /* EmptyStateView.swift */; };
+		9A8FC7BB2F1E928C0025E407 /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7862F1E928C0025E407 /* ErrorView.swift */; };
+		9A8FC7BC2F1E928C0025E407 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7872F1E928C0025E407 /* LoadingView.swift */; };
+		9A8FC7BD2F1E928C0025E407 /* MapViewWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7882F1E928C0025E407 /* MapViewWrapper.swift */; };
+		9A8FC7BE2F1E928C0025E407 /* PrimaryButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7892F1E928C0025E407 /* PrimaryButtonStyle.swift */; };
+		9A8FC7BF2F1E928C0025E407 /* AttractionInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC78B2F1E928C0025E407 /* AttractionInputView.swift */; };
+		9A8FC7C02F1E928C0025E407 /* DestinationInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC78C2F1E928C0025E407 /* DestinationInputView.swift */; };
+		9A8FC7C12F1E928C0025E407 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC78D2F1E928C0025E407 /* HistoryView.swift */; };
+		9A8FC7C22F1E928C0025E407 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC78E2F1E928C0025E407 /* MainView.swift */; };
+		9A8FC7C32F1E928C0025E407 /* PlanDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC78F2F1E928C0025E407 /* PlanDetailView.swift */; };
+		9A8FC7C42F1E928C0025E407 /* ResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7902F1E928C0025E407 /* ResultView.swift */; };
+		9A8FC7C52F1E928C0025E407 /* TravelModeSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7912F1E928C0025E407 /* TravelModeSelectionView.swift */; };
+		9A8FC7C62F1E928C0025E407 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FC7932F1E928C0025E407 /* Assets.xcassets */; };
+		9A8FC7C72F1E928C0025E407 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7942F1E928C0025E407 /* ContentView.swift */; };
+		9A8FC7C92F1E928C0025E407 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 9A8FC7962F1E928C0025E407 /* README.md */; };
+		9A8FC7CA2F1E928C0025E407 /* TravelPlanRouteMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A8FC7972F1E928C0025E407 /* TravelPlanRouteMapApp.swift */; };
+		E69988BD161B680EF36212A8 /* Pods_TravelPlanRouteMap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44BF31F26EBA4BCB9918EB2A /* Pods_TravelPlanRouteMap.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +96,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0AC6D2816843B8BEC6B956EF /* Pods-TravelPlanRouteMapUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelPlanRouteMapUITests.release.xcconfig"; path = "Target Support Files/Pods-TravelPlanRouteMapUITests/Pods-TravelPlanRouteMapUITests.release.xcconfig"; sourceTree = "<group>"; };
+		1CE32CAE00B2D88B6616EB3F /* Pods-TravelPlanRouteMap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelPlanRouteMap.release.xcconfig"; path = "Target Support Files/Pods-TravelPlanRouteMap/Pods-TravelPlanRouteMap.release.xcconfig"; sourceTree = "<group>"; };
+		44BF31F26EBA4BCB9918EB2A /* Pods_TravelPlanRouteMap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TravelPlanRouteMap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		67899E6DB2BC4EE6D2911CE7 /* Pods-TravelPlanRouteMap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelPlanRouteMap.debug.xcconfig"; path = "Target Support Files/Pods-TravelPlanRouteMap/Pods-TravelPlanRouteMap.debug.xcconfig"; sourceTree = "<group>"; };
 		9A8FC73A2F1E92160025E407 /* DataPersistencePropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataPersistencePropertyTests.swift; sourceTree = "<group>"; };
 		9A8FC73B2F1E92160025E407 /* InputValidationPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputValidationPropertyTests.swift; sourceTree = "<group>"; };
 		9A8FC73C2F1E92160025E407 /* RoutePlanningPropertyTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePlanningPropertyTests.swift; sourceTree = "<group>"; };
@@ -65,13 +117,64 @@
 		9A8FC7582F1E922E0025E407 /* FlowUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlowUITests.swift; sourceTree = "<group>"; };
 		9A8FC7592F1E922E0025E407 /* TravelPlanRouteMapUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITests.swift; sourceTree = "<group>"; };
 		9A8FC75A2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		9A8FC75F2F1E928C0025E407 /* AccommodationZone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccommodationZone.swift; sourceTree = "<group>"; };
+		9A8FC7602F1E928C0025E407 /* Attraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Attraction.swift; sourceTree = "<group>"; };
+		9A8FC7612F1E928C0025E407 /* Coordinate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coordinate.swift; sourceTree = "<group>"; };
+		9A8FC7622F1E928C0025E407 /* GeocodingResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodingResult.swift; sourceTree = "<group>"; };
+		9A8FC7632F1E928C0025E407 /* MapRegion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapRegion.swift; sourceTree = "<group>"; };
+		9A8FC7642F1E928C0025E407 /* OptimizedRoute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptimizedRoute.swift; sourceTree = "<group>"; };
+		9A8FC7652F1E928C0025E407 /* TravelMode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelMode.swift; sourceTree = "<group>"; };
+		9A8FC7662F1E928C0025E407 /* TravelPlan.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlan.swift; sourceTree = "<group>"; };
+		9A8FC7672F1E928C0025E407 /* TravelPlanError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanError.swift; sourceTree = "<group>"; };
+		9A8FC7692F1E928C0025E407 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9A8FC76B2F1E928C0025E407 /* AIAgent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AIAgent.swift; sourceTree = "<group>"; };
+		9A8FC76C2F1E928C0025E407 /* AMapGeocodingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMapGeocodingService.swift; sourceTree = "<group>"; };
+		9A8FC76D2F1E928C0025E407 /* AMapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AMapService.swift; sourceTree = "<group>"; };
+		9A8FC76E2F1E928C0025E407 /* GeocodingService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodingService.swift; sourceTree = "<group>"; };
+		9A8FC76F2F1E928C0025E407 /* MapService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapService.swift; sourceTree = "<group>"; };
+		9A8FC7702F1E928C0025E407 /* PromptModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromptModule.swift; sourceTree = "<group>"; };
+		9A8FC7712F1E928C0025E407 /* RoutePlanningService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoutePlanningService.swift; sourceTree = "<group>"; };
+		9A8FC7722F1E928C0025E407 /* TravelPlanRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRepository.swift; sourceTree = "<group>"; };
+		9A8FC7742F1E928C0025E407 /* AnimationDuration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnimationDuration.swift; sourceTree = "<group>"; };
+		9A8FC7752F1E928C0025E407 /* AppColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		9A8FC7762F1E928C0025E407 /* AppDependencies.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDependencies.swift; sourceTree = "<group>"; };
+		9A8FC7772F1E928C0025E407 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		9A8FC7782F1E928C0025E407 /* ErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorHandler.swift; sourceTree = "<group>"; };
+		9A8FC7792F1E928C0025E407 /* HapticFeedback.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HapticFeedback.swift; sourceTree = "<group>"; };
+		9A8FC77A2F1E928C0025E407 /* Spacing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spacing.swift; sourceTree = "<group>"; };
+		9A8FC77C2F1E928C0025E407 /* AttractionViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttractionViewModel.swift; sourceTree = "<group>"; };
+		9A8FC77D2F1E928C0025E407 /* DestinationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationViewModel.swift; sourceTree = "<group>"; };
+		9A8FC77E2F1E928C0025E407 /* HistoryViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryViewModel.swift; sourceTree = "<group>"; };
+		9A8FC77F2F1E928C0025E407 /* ResultViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultViewModel.swift; sourceTree = "<group>"; };
+		9A8FC7812F1E928C0025E407 /* AttractionAnnotationView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttractionAnnotationView.swift; sourceTree = "<group>"; };
+		9A8FC7822F1E928C0025E407 /* AttractionCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttractionCard.swift; sourceTree = "<group>"; };
+		9A8FC7832F1E928C0025E407 /* CustomNavigationBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomNavigationBar.swift; sourceTree = "<group>"; };
+		9A8FC7842F1E928C0025E407 /* CustomTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		9A8FC7852F1E928C0025E407 /* EmptyStateView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		9A8FC7862F1E928C0025E407 /* ErrorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
+		9A8FC7872F1E928C0025E407 /* LoadingView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
+		9A8FC7882F1E928C0025E407 /* MapViewWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewWrapper.swift; sourceTree = "<group>"; };
+		9A8FC7892F1E928C0025E407 /* PrimaryButtonStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrimaryButtonStyle.swift; sourceTree = "<group>"; };
+		9A8FC78B2F1E928C0025E407 /* AttractionInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AttractionInputView.swift; sourceTree = "<group>"; };
+		9A8FC78C2F1E928C0025E407 /* DestinationInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DestinationInputView.swift; sourceTree = "<group>"; };
+		9A8FC78D2F1E928C0025E407 /* HistoryView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
+		9A8FC78E2F1E928C0025E407 /* MainView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		9A8FC78F2F1E928C0025E407 /* PlanDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlanDetailView.swift; sourceTree = "<group>"; };
+		9A8FC7902F1E928C0025E407 /* ResultView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResultView.swift; sourceTree = "<group>"; };
+		9A8FC7912F1E928C0025E407 /* TravelModeSelectionView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelModeSelectionView.swift; sourceTree = "<group>"; };
+		9A8FC7932F1E928C0025E407 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9A8FC7942F1E928C0025E407 /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9A8FC7952F1E928C0025E407 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9A8FC7962F1E928C0025E407 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9A8FC7972F1E928C0025E407 /* TravelPlanRouteMapApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapApp.swift; sourceTree = "<group>"; };
 		9ACF1CE02F1BC4F1003E8163 /* TravelPlanRouteMap.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TravelPlanRouteMap.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TravelPlanRouteMapApp.swift; sourceTree = "<group>"; };
-		9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
-		9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9ACF1CF02F1BC4F4003E8163 /* TravelPlanRouteMapTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelPlanRouteMapTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ACF1CFA2F1BC4F4003E8163 /* TravelPlanRouteMapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TravelPlanRouteMapUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A8ED6B9D954B4BDE27D927B1 /* Pods-TravelPlanRouteMapTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelPlanRouteMapTests.debug.xcconfig"; path = "Target Support Files/Pods-TravelPlanRouteMapTests/Pods-TravelPlanRouteMapTests.debug.xcconfig"; sourceTree = "<group>"; };
+		C018BFA84B1304920A216FC9 /* libPods-TravelPlanRouteMapUITests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelPlanRouteMapUITests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2718F810A8CFA0D0C07F966 /* Pods-TravelPlanRouteMapUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelPlanRouteMapUITests.debug.xcconfig"; path = "Target Support Files/Pods-TravelPlanRouteMapUITests/Pods-TravelPlanRouteMapUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D9284AFCBC76F0DF6E37BDFE /* libPods-TravelPlanRouteMapTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TravelPlanRouteMapTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		EC63B09123CC828E3BCDBA05 /* Pods-TravelPlanRouteMapTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TravelPlanRouteMapTests.release.xcconfig"; path = "Target Support Files/Pods-TravelPlanRouteMapTests/Pods-TravelPlanRouteMapTests.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +182,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E69988BD161B680EF36212A8 /* Pods_TravelPlanRouteMap.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -86,6 +190,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				475573524B02443BD1238D4A /* libPods-TravelPlanRouteMapTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,12 +198,23 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8268AD6E490C567BB8848519 /* libPods-TravelPlanRouteMapUITests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6CC600F2A058D3C7E0BD7759 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				44BF31F26EBA4BCB9918EB2A /* Pods_TravelPlanRouteMap.framework */,
+				D9284AFCBC76F0DF6E37BDFE /* libPods-TravelPlanRouteMapTests.a */,
+				C018BFA84B1304920A216FC9 /* libPods-TravelPlanRouteMapUITests.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		9A8FC73D2F1E92160025E407 /* PropertyTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -138,13 +254,128 @@
 			path = TravelPlanRouteMapUITests;
 			sourceTree = "<group>";
 		};
+		9A8FC7682F1E928C0025E407 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC75F2F1E928C0025E407 /* AccommodationZone.swift */,
+				9A8FC7602F1E928C0025E407 /* Attraction.swift */,
+				9A8FC7612F1E928C0025E407 /* Coordinate.swift */,
+				9A8FC7622F1E928C0025E407 /* GeocodingResult.swift */,
+				9A8FC7632F1E928C0025E407 /* MapRegion.swift */,
+				9A8FC7642F1E928C0025E407 /* OptimizedRoute.swift */,
+				9A8FC7652F1E928C0025E407 /* TravelMode.swift */,
+				9A8FC7662F1E928C0025E407 /* TravelPlan.swift */,
+				9A8FC7672F1E928C0025E407 /* TravelPlanError.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9A8FC76A2F1E928C0025E407 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC7692F1E928C0025E407 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		9A8FC7732F1E928C0025E407 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC76B2F1E928C0025E407 /* AIAgent.swift */,
+				9A8FC76C2F1E928C0025E407 /* AMapGeocodingService.swift */,
+				9A8FC76D2F1E928C0025E407 /* AMapService.swift */,
+				9A8FC76E2F1E928C0025E407 /* GeocodingService.swift */,
+				9A8FC76F2F1E928C0025E407 /* MapService.swift */,
+				9A8FC7702F1E928C0025E407 /* PromptModule.swift */,
+				9A8FC7712F1E928C0025E407 /* RoutePlanningService.swift */,
+				9A8FC7722F1E928C0025E407 /* TravelPlanRepository.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		9A8FC77B2F1E928C0025E407 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC7742F1E928C0025E407 /* AnimationDuration.swift */,
+				9A8FC7752F1E928C0025E407 /* AppColors.swift */,
+				9A8FC7762F1E928C0025E407 /* AppDependencies.swift */,
+				9A8FC7772F1E928C0025E407 /* Config.swift */,
+				9A8FC7782F1E928C0025E407 /* ErrorHandler.swift */,
+				9A8FC7792F1E928C0025E407 /* HapticFeedback.swift */,
+				9A8FC77A2F1E928C0025E407 /* Spacing.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		9A8FC7802F1E928C0025E407 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC77C2F1E928C0025E407 /* AttractionViewModel.swift */,
+				9A8FC77D2F1E928C0025E407 /* DestinationViewModel.swift */,
+				9A8FC77E2F1E928C0025E407 /* HistoryViewModel.swift */,
+				9A8FC77F2F1E928C0025E407 /* ResultViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		9A8FC78A2F1E928C0025E407 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC7812F1E928C0025E407 /* AttractionAnnotationView.swift */,
+				9A8FC7822F1E928C0025E407 /* AttractionCard.swift */,
+				9A8FC7832F1E928C0025E407 /* CustomNavigationBar.swift */,
+				9A8FC7842F1E928C0025E407 /* CustomTextField.swift */,
+				9A8FC7852F1E928C0025E407 /* EmptyStateView.swift */,
+				9A8FC7862F1E928C0025E407 /* ErrorView.swift */,
+				9A8FC7872F1E928C0025E407 /* LoadingView.swift */,
+				9A8FC7882F1E928C0025E407 /* MapViewWrapper.swift */,
+				9A8FC7892F1E928C0025E407 /* PrimaryButtonStyle.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		9A8FC7922F1E928C0025E407 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC78A2F1E928C0025E407 /* Components */,
+				9A8FC78B2F1E928C0025E407 /* AttractionInputView.swift */,
+				9A8FC78C2F1E928C0025E407 /* DestinationInputView.swift */,
+				9A8FC78D2F1E928C0025E407 /* HistoryView.swift */,
+				9A8FC78E2F1E928C0025E407 /* MainView.swift */,
+				9A8FC78F2F1E928C0025E407 /* PlanDetailView.swift */,
+				9A8FC7902F1E928C0025E407 /* ResultView.swift */,
+				9A8FC7912F1E928C0025E407 /* TravelModeSelectionView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9A8FC7982F1E928C0025E407 /* TravelPlanRouteMap */ = {
+			isa = PBXGroup;
+			children = (
+				9A8FC7682F1E928C0025E407 /* Models */,
+				9A8FC76A2F1E928C0025E407 /* Preview Content */,
+				9A8FC7732F1E928C0025E407 /* Services */,
+				9A8FC77B2F1E928C0025E407 /* Utils */,
+				9A8FC7802F1E928C0025E407 /* ViewModels */,
+				9A8FC7922F1E928C0025E407 /* Views */,
+				9A8FC7932F1E928C0025E407 /* Assets.xcassets */,
+				9A8FC7942F1E928C0025E407 /* ContentView.swift */,
+				9A8FC7952F1E928C0025E407 /* Info.plist */,
+				9A8FC7962F1E928C0025E407 /* README.md */,
+				9A8FC7972F1E928C0025E407 /* TravelPlanRouteMapApp.swift */,
+			);
+			path = TravelPlanRouteMap;
+			sourceTree = "<group>";
+		};
 		9ACF1CD72F1BC4F1003E8163 = {
 			isa = PBXGroup;
 			children = (
+				9A8FC7982F1E928C0025E407 /* TravelPlanRouteMap */,
 				9A8FC75B2F1E922E0025E407 /* TravelPlanRouteMapUITests */,
 				9A8FC7492F1E92160025E407 /* TravelPlanRouteMapTests */,
-				9ACF1CE22F1BC4F1003E8163 /* TravelPlanRouteMap */,
 				9ACF1CE12F1BC4F1003E8163 /* Products */,
+				B57A2F992FB5930391E4676E /* Pods */,
+				6CC600F2A058D3C7E0BD7759 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,23 +389,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		9ACF1CE22F1BC4F1003E8163 /* TravelPlanRouteMap */ = {
+		B57A2F992FB5930391E4676E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				9ACF1CE32F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift */,
-				9ACF1CE52F1BC4F1003E8163 /* ContentView.swift */,
-				9ACF1CE72F1BC4F3003E8163 /* Assets.xcassets */,
-				9ACF1CE92F1BC4F3003E8163 /* Preview Content */,
+				67899E6DB2BC4EE6D2911CE7 /* Pods-TravelPlanRouteMap.debug.xcconfig */,
+				1CE32CAE00B2D88B6616EB3F /* Pods-TravelPlanRouteMap.release.xcconfig */,
+				A8ED6B9D954B4BDE27D927B1 /* Pods-TravelPlanRouteMapTests.debug.xcconfig */,
+				EC63B09123CC828E3BCDBA05 /* Pods-TravelPlanRouteMapTests.release.xcconfig */,
+				D2718F810A8CFA0D0C07F966 /* Pods-TravelPlanRouteMapUITests.debug.xcconfig */,
+				0AC6D2816843B8BEC6B956EF /* Pods-TravelPlanRouteMapUITests.release.xcconfig */,
 			);
-			path = TravelPlanRouteMap;
-			sourceTree = "<group>";
-		};
-		9ACF1CE92F1BC4F3003E8163 /* Preview Content */ = {
-			isa = PBXGroup;
-			children = (
-				9ACF1CEA2F1BC4F3003E8163 /* Preview Assets.xcassets */,
-			);
-			path = "Preview Content";
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -184,9 +410,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9ACF1D042F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMap" */;
 			buildPhases = (
+				E7EF86BDC09FCBE97770CF11 /* [CP] Check Pods Manifest.lock */,
 				9ACF1CDC2F1BC4F1003E8163 /* Sources */,
 				9ACF1CDD2F1BC4F1003E8163 /* Frameworks */,
 				9ACF1CDE2F1BC4F1003E8163 /* Resources */,
+				9DA52D902AC669E1AB6F8125 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -201,6 +429,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9ACF1D072F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMapTests" */;
 			buildPhases = (
+				753EE3648326CABE85DD2590 /* [CP] Check Pods Manifest.lock */,
 				9ACF1CEC2F1BC4F4003E8163 /* Sources */,
 				9ACF1CED2F1BC4F4003E8163 /* Frameworks */,
 				9ACF1CEE2F1BC4F4003E8163 /* Resources */,
@@ -219,6 +448,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9ACF1D0A2F1BC4F4003E8163 /* Build configuration list for PBXNativeTarget "TravelPlanRouteMapUITests" */;
 			buildPhases = (
+				E9C2F59A76F045FA81342FC6 /* [CP] Check Pods Manifest.lock */,
 				9ACF1CF62F1BC4F4003E8163 /* Sources */,
 				9ACF1CF72F1BC4F4003E8163 /* Frameworks */,
 				9ACF1CF82F1BC4F4003E8163 /* Resources */,
@@ -281,8 +511,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9ACF1CEB2F1BC4F3003E8163 /* Preview Assets.xcassets in Resources */,
-				9ACF1CE82F1BC4F3003E8163 /* Assets.xcassets in Resources */,
+				9A8FC7C92F1E928C0025E407 /* README.md in Resources */,
+				9A8FC7A22F1E928C0025E407 /* Preview Assets.xcassets in Resources */,
+				9A8FC7C62F1E928C0025E407 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -302,17 +533,153 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		753EE3648326CABE85DD2590 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TravelPlanRouteMapTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		9DA52D902AC669E1AB6F8125 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TravelPlanRouteMap/Pods-TravelPlanRouteMap-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TravelPlanRouteMap/Pods-TravelPlanRouteMap-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TravelPlanRouteMap/Pods-TravelPlanRouteMap-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E7EF86BDC09FCBE97770CF11 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TravelPlanRouteMap-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E9C2F59A76F045FA81342FC6 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TravelPlanRouteMapUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		9ACF1CDC2F1BC4F1003E8163 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A8FC7A92F1E928C0025E407 /* RoutePlanningService.swift in Sources */,
+				9A8FC7B12F1E928C0025E407 /* Spacing.swift in Sources */,
+				9A8FC79F2F1E928C0025E407 /* TravelMode.swift in Sources */,
+				9A8FC7C52F1E928C0025E407 /* TravelModeSelectionView.swift in Sources */,
+				9A8FC7A12F1E928C0025E407 /* TravelPlanError.swift in Sources */,
+				9A8FC7A72F1E928C0025E407 /* MapService.swift in Sources */,
+				9A8FC7B92F1E928C0025E407 /* CustomTextField.swift in Sources */,
+				9A8FC7C12F1E928C0025E407 /* HistoryView.swift in Sources */,
+				9A8FC7BB2F1E928C0025E407 /* ErrorView.swift in Sources */,
+				9A8FC7B62F1E928C0025E407 /* AttractionAnnotationView.swift in Sources */,
+				9A8FC7C22F1E928C0025E407 /* MainView.swift in Sources */,
+				9A8FC79D2F1E928C0025E407 /* MapRegion.swift in Sources */,
+				9A8FC7992F1E928C0025E407 /* AccommodationZone.swift in Sources */,
+				9A8FC7A82F1E928C0025E407 /* PromptModule.swift in Sources */,
+				9A8FC79B2F1E928C0025E407 /* Coordinate.swift in Sources */,
+				9A8FC7B82F1E928C0025E407 /* CustomNavigationBar.swift in Sources */,
+				9A8FC7B22F1E928C0025E407 /* AttractionViewModel.swift in Sources */,
+				9A8FC7BA2F1E928C0025E407 /* EmptyStateView.swift in Sources */,
+				9A8FC7A52F1E928C0025E407 /* AMapService.swift in Sources */,
+				9A8FC7AB2F1E928C0025E407 /* AnimationDuration.swift in Sources */,
+				9A8FC79E2F1E928C0025E407 /* OptimizedRoute.swift in Sources */,
+				9A8FC7C32F1E928C0025E407 /* PlanDetailView.swift in Sources */,
+				9A8FC79A2F1E928C0025E407 /* Attraction.swift in Sources */,
+				9A8FC7BE2F1E928C0025E407 /* PrimaryButtonStyle.swift in Sources */,
+				9A8FC7A62F1E928C0025E407 /* GeocodingService.swift in Sources */,
+				9A8FC7C72F1E928C0025E407 /* ContentView.swift in Sources */,
+				9A8FC7A02F1E928C0025E407 /* TravelPlan.swift in Sources */,
+				9A8FC7C42F1E928C0025E407 /* ResultView.swift in Sources */,
+				9A8FC7B42F1E928C0025E407 /* HistoryViewModel.swift in Sources */,
+				9A8FC7B32F1E928C0025E407 /* DestinationViewModel.swift in Sources */,
+				9A8FC7C02F1E928C0025E407 /* DestinationInputView.swift in Sources */,
+				9A8FC7BC2F1E928C0025E407 /* LoadingView.swift in Sources */,
+				9A8FC7B52F1E928C0025E407 /* ResultViewModel.swift in Sources */,
+				9A8FC7A32F1E928C0025E407 /* AIAgent.swift in Sources */,
+				9A8FC7CA2F1E928C0025E407 /* TravelPlanRouteMapApp.swift in Sources */,
+				9A8FC7AC2F1E928C0025E407 /* AppColors.swift in Sources */,
+				9A8FC7B02F1E928C0025E407 /* HapticFeedback.swift in Sources */,
+				9A8FC7BD2F1E928C0025E407 /* MapViewWrapper.swift in Sources */,
+				9A8FC7AA2F1E928C0025E407 /* TravelPlanRepository.swift in Sources */,
+				9A8FC79C2F1E928C0025E407 /* GeocodingResult.swift in Sources */,
+				9A8FC7AF2F1E928C0025E407 /* ErrorHandler.swift in Sources */,
+				9A8FC7A42F1E928C0025E407 /* AMapGeocodingService.swift in Sources */,
+				9A8FC7AD2F1E928C0025E407 /* AppDependencies.swift in Sources */,
+				9A8FC7BF2F1E928C0025E407 /* AttractionInputView.swift in Sources */,
+				9A8FC7AE2F1E928C0025E407 /* Config.swift in Sources */,
+				9A8FC7B72F1E928C0025E407 /* AttractionCard.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9ACF1CEC2F1BC4F4003E8163 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 				9A8FC74B2F1E92160025E407 /* InputValidationPropertyTests.swift in Sources */,
 				9A8FC7572F1E92170025E407 /* TravelPlanRouteMapTests.swift in Sources */,
-				9ACF1CE62F1BC4F1003E8163 /* ContentView.swift in Sources */,
-				9A8FC75E2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */,
 				9A8FC7522F1E92170025E407 /* MapServiceTests.swift in Sources */,
-				9ACF1CE42F1BC4F1003E8163 /* TravelPlanRouteMapApp.swift in Sources */,
 				9A8FC74F2F1E92160025E407 /* InputValidationTests.swift in Sources */,
 				9A8FC7562F1E92170025E407 /* TravelPlanRepositoryTests.swift in Sources */,
 				9A8FC74E2F1E92160025E407 /* ErrorHandlerTests.swift in Sources */,
@@ -321,18 +688,9 @@
 				9A8FC7512F1E92160025E407 /* MapServicePropertyTests.swift in Sources */,
 				9A8FC74D2F1E92160025E407 /* AIAgentTests.swift in Sources */,
 				9A8FC74C2F1E92160025E407 /* RoutePlanningPropertyTests.swift in Sources */,
-				9A8FC75D2F1E922E0025E407 /* TravelPlanRouteMapUITests.swift in Sources */,
 				9A8FC7532F1E92170025E407 /* PromptModuleTests.swift in Sources */,
-				9A8FC75C2F1E922E0025E407 /* FlowUITests.swift in Sources */,
 				9A8FC74A2F1E92160025E407 /* DataPersistencePropertyTests.swift in Sources */,
 				9A8FC7502F1E92160025E407 /* IntegrationTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		9ACF1CEC2F1BC4F4003E8163 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -340,6 +698,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9A8FC75E2F1E922E0025E407 /* TravelPlanRouteMapUITestsLaunchTests.swift in Sources */,
+				9A8FC75D2F1E922E0025E407 /* TravelPlanRouteMapUITests.swift in Sources */,
+				9A8FC75C2F1E922E0025E407 /* FlowUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,7 +757,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -459,7 +820,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -480,6 +841,7 @@
 		};
 		9ACF1D052F1BC4F4003E8163 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 67899E6DB2BC4EE6D2911CE7 /* Pods-TravelPlanRouteMap.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -488,7 +850,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"TravelPlanRouteMap/Preview Content\"";
 				DEVELOPMENT_TEAM = T3F7SD4834;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TravelPlanRouteMap/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -509,6 +872,7 @@
 		};
 		9ACF1D062F1BC4F4003E8163 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CE32CAE00B2D88B6616EB3F /* Pods-TravelPlanRouteMap.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -517,7 +881,8 @@
 				DEVELOPMENT_ASSET_PATHS = "\"TravelPlanRouteMap/Preview Content\"";
 				DEVELOPMENT_TEAM = T3F7SD4834;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = TravelPlanRouteMap/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -538,6 +903,7 @@
 		};
 		9ACF1D082F1BC4F4003E8163 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A8ED6B9D954B4BDE27D927B1 /* Pods-TravelPlanRouteMapTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -558,6 +924,7 @@
 		};
 		9ACF1D092F1BC4F4003E8163 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EC63B09123CC828E3BCDBA05 /* Pods-TravelPlanRouteMapTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -578,6 +945,7 @@
 		};
 		9ACF1D0B2F1BC4F4003E8163 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = D2718F810A8CFA0D0C07F966 /* Pods-TravelPlanRouteMapUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -596,6 +964,7 @@
 		};
 		9ACF1D0C2F1BC4F4003E8163 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0AC6D2816843B8BEC6B956EF /* Pods-TravelPlanRouteMapUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
