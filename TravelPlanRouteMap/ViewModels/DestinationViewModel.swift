@@ -13,12 +13,13 @@ class DestinationViewModel: ObservableObject {
     
     private let geocodingService: GeocodingService
     private var searchTask: Task<Void, Never>?
+    private let debounceDelay: UInt64 = 500_000_000  // 500ms 防抖延迟
     
     init(geocodingService: GeocodingService = AppDependencies.shared.geocodingService) {
         self.geocodingService = geocodingService
     }
     
-    /// 搜索目的地（使用高德地理编码）
+    /// 搜索目的地（使用高德地理编码，带防抖）
     func searchDestination() {
         let keyword = destination.trimmingCharacters(in: .whitespaces)
         
@@ -31,6 +32,11 @@ class DestinationViewModel: ObservableObject {
         searchTask?.cancel()
         
         searchTask = Task {
+            // 防抖：等待 500ms，如果期间有新输入则取消
+            try? await Task.sleep(nanoseconds: debounceDelay)
+            
+            guard !Task.isCancelled else { return }
+            
             isSearching = true
             errorMessage = nil
             
@@ -42,7 +48,13 @@ class DestinationViewModel: ObservableObject {
                 }
             } catch {
                 if !Task.isCancelled {
-                    errorMessage = "搜索失败：\(error.localizedDescription)"
+                    // 优化错误提示
+                    let errorMsg = error.localizedDescription
+                    if errorMsg.contains("EXCEEDED_THE_LIMIT") || errorMsg.contains("QPS") {
+                        errorMessage = "搜索太频繁，请稍后再试"
+                    } else {
+                        errorMessage = "搜索失败：\(errorMsg)"
+                    }
                     searchResults = []
                 }
             }

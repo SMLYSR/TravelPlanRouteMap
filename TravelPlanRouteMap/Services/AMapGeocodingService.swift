@@ -46,8 +46,8 @@ class AMapGeocodingService: NSObject, GeocodingService {
             
             let request = AMapPOIKeywordsSearchRequest()
             request.keywords = keyword
-            request.city = city ?? ""
-            request.cityLimit = city != nil
+            // 不限制城市范围，允许全国搜索
+            request.cityLimit = false
             request.offset = 20  // 每页返回数量
             searchAPI.aMapPOIKeywordsSearch(request)
         }

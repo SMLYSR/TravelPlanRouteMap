@@ -5,40 +5,56 @@ class AppDependencies {
     static let shared = AppDependencies()
     
     let promptProvider: PromptProvider
-    let aiAgent: AIAgent
-    let geocodingService: GeocodingService
-    let routePlanningService: RoutePlanningService
-    let mapService: MapService
     let repository: TravelPlanRepository
     
-    private init() {
-        // 初始化提示词模块
-        self.promptProvider = PromptModule()
-        
-        // 初始化地理编码服务（使用高德地图）
-        self.geocodingService = AMapGeocodingService()
-        
-        // 初始化 AI Agent
-        if !Config.openAIKey.isEmpty {
-            self.aiAgent = OpenAIAgent(
-                apiKey: Config.openAIKey,
-                timeout: Config.aiTimeout
-            )
-        } else {
-            self.aiAgent = MockAIAgent()
+    // 延迟初始化的服务（避免启动时阻塞主线程）
+    private var _aiAgent: AIAgent?
+    private var _geocodingService: GeocodingService?
+    private var _routePlanningService: RoutePlanningService?
+    private var _mapService: MapService?
+    
+    var aiAgent: AIAgent {
+        if _aiAgent == nil {
+            if !Config.openAIKey.isEmpty {
+                _aiAgent = OpenAIAgent(
+                    apiKey: Config.openAIKey,
+                    timeout: Config.aiTimeout
+                )
+            } else {
+                _aiAgent = MockAIAgent()
+            }
         }
-        
-        // 初始化路线规划服务
-        self.routePlanningService = DefaultRoutePlanningService(
-            aiAgent: aiAgent,
-            promptProvider: promptProvider,
-            geocodingService: geocodingService
-        )
-        
-        // 初始化地图服务（使用高德地图）
-        self.mapService = AMapService()
-        
-        // 初始化数据仓库
+        return _aiAgent!
+    }
+    
+    var geocodingService: GeocodingService {
+        if _geocodingService == nil {
+            _geocodingService = AMapGeocodingService()
+        }
+        return _geocodingService!
+    }
+    
+    var routePlanningService: RoutePlanningService {
+        if _routePlanningService == nil {
+            _routePlanningService = DefaultRoutePlanningService(
+                aiAgent: aiAgent,
+                promptProvider: promptProvider,
+                geocodingService: geocodingService
+            )
+        }
+        return _routePlanningService!
+    }
+    
+    var mapService: MapService {
+        if _mapService == nil {
+            _mapService = AMapService()
+        }
+        return _mapService!
+    }
+    
+    private init() {
+        // 只初始化轻量级服务
+        self.promptProvider = PromptModule()
         self.repository = LocalTravelPlanRepository()
     }
     
@@ -52,10 +68,10 @@ class AppDependencies {
         repository: TravelPlanRepository
     ) {
         self.promptProvider = promptProvider
-        self.aiAgent = aiAgent
-        self.geocodingService = geocodingService
-        self.routePlanningService = routePlanningService
-        self.mapService = mapService
+        self._aiAgent = aiAgent
+        self._geocodingService = geocodingService
+        self._routePlanningService = routePlanningService
+        self._mapService = mapService
         self.repository = repository
     }
 }

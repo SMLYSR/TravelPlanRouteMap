@@ -14,6 +14,7 @@ class AttractionViewModel: ObservableObject {
     private let geocodingService: GeocodingService
     private let destination: String
     private var searchTask: Task<Void, Never>?
+    private let debounceDelay: UInt64 = 500_000_000  // 500ms 防抖延迟
     
     let maxAttractions = Config.maxAttractions
     let minAttractions = Config.minAttractions
@@ -23,7 +24,7 @@ class AttractionViewModel: ObservableObject {
         self.destination = destination
     }
     
-    /// 模糊搜索景点（使用高德POI搜索）
+    /// 模糊搜索景点（使用高德POI搜索，带防抖）
     func searchAttractions() {
         let keyword = currentInput.trimmingCharacters(in: .whitespaces)
         
@@ -36,6 +37,11 @@ class AttractionViewModel: ObservableObject {
         searchTask?.cancel()
         
         searchTask = Task {
+            // 防抖：等待 500ms，如果期间有新输入则取消
+            try? await Task.sleep(nanoseconds: debounceDelay)
+            
+            guard !Task.isCancelled else { return }
+            
             isSearching = true
             errorMessage = nil
             
@@ -50,7 +56,13 @@ class AttractionViewModel: ObservableObject {
                 }
             } catch {
                 if !Task.isCancelled {
-                    errorMessage = "搜索失败：\(error.localizedDescription)"
+                    // 优化错误提示
+                    let errorMsg = error.localizedDescription
+                    if errorMsg.contains("EXCEEDED_THE_LIMIT") || errorMsg.contains("QPS") {
+                        errorMessage = "搜索太频繁，请稍后再试"
+                    } else {
+                        errorMessage = "搜索失败：\(errorMsg)"
+                    }
                     searchResults = []
                 }
             }
