@@ -1,36 +1,96 @@
 import SwiftUI
 
-/// 计划详情视图 - 顶部地图 + 底部行程方案
+/// 计划详情视图 - 全屏地图 + 可收起底部面板
 struct PlanDetailView: View {
     let plan: TravelPlan
     var onBack: () -> Void
     var onNewPlan: () -> Void
+    var onDelete: (() -> Void)?
+    
+    @State private var showDeleteAlert = false
     
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                // 顶部地图区域
-                DetailMapSection(plan: plan, onBack: onBack, onNewPlan: onNewPlan)
-                
-                // 行程方案区域
-                DetailPlanSection(plan: plan)
-            }
+        ZStack {
+            Color.white.ignoresSafeArea()
+            
+            // 主内容
+            DetailContentView(
+                plan: plan,
+                onBack: onBack,
+                onNewPlan: onNewPlan,
+                onDelete: onDelete != nil ? { showDeleteAlert = true } : nil
+            )
         }
-        .ignoresSafeArea(edges: .top)
-        .background(Color.white)
+        .alert("确认删除", isPresented: $showDeleteAlert) {
+            Button("取消", role: .cancel) {}
+            Button("删除", role: .destructive) {
+                onDelete?()
+            }
+        } message: {
+            Text("确定要删除「\(plan.destination)」的旅行计划吗？此操作无法撤销。")
+        }
     }
 }
 
-// MARK: - 地图区域
+// MARK: - 主内容视图
 
-struct DetailMapSection: View {
+struct DetailContentView: View {
     let plan: TravelPlan
     var onBack: () -> Void
     var onNewPlan: () -> Void
+    var onDelete: (() -> Void)?
+    
+    // 面板展开/收起状态
+    @State private var isExpanded: Bool = true
+    // 选中的景点（用于地图聚焦）
+    @State private var selectedAttraction: Attraction? = nil
+    
+    // 面板高度
+    private let collapsedHeight: CGFloat = 90
+    private var expandedHeight: CGFloat { UIScreen.main.bounds.height - 180 }
+    
+    var body: some View {
+        GeometryReader { geometry in
+            ZStack {
+                // 全屏地图
+                DetailFullScreenMapView(
+                    plan: plan,
+                    selectedAttraction: selectedAttraction,
+                    onBack: onBack,
+                    onNewPlan: onNewPlan,
+                    onDelete: onDelete
+                )
+                
+                // 可展开/收起的底部面板
+                VStack(spacing: 0) {
+                    Spacer()
+                    
+                    DetailCollapsibleSheet(
+                        plan: plan,
+                        isExpanded: $isExpanded,
+                        selectedAttraction: $selectedAttraction,
+                        collapsedHeight: collapsedHeight,
+                        expandedHeight: expandedHeight
+                    )
+                }
+            }
+        }
+        .ignoresSafeArea(edges: .bottom)
+    }
+}
+
+// MARK: - 全屏地图视图
+
+struct DetailFullScreenMapView: View {
+    let plan: TravelPlan
+    var selectedAttraction: Attraction? = nil
+    var onBack: () -> Void
+    var onNewPlan: () -> Void
+    var onDelete: (() -> Void)?
     
     var body: some View {
         ZStack(alignment: .top) {
-            // 地图
+            // 全屏地图
             MapViewWrapper(
                 region: MapRegion(
                     center: plan.route.routePath.first ?? Coordinate(latitude: 39.9042, longitude: 116.4074),
@@ -38,84 +98,111 @@ struct DetailMapSection: View {
                 ),
                 attractions: plan.route.orderedAttractions,
                 route: plan.route.routePath,
-                accommodationZones: []
+                accommodationZones: [],
+                selectedAttraction: selectedAttraction
             )
-            .frame(height: 280)
+            .ignoresSafeArea()
             
             // 浮动导航栏
             HStack {
                 Button(action: onBack) {
                     HStack(spacing: 6) {
                         Image(systemName: "chevron.left")
-                            .font(.system(size: 13, weight: .semibold))
-                        Text(plan.destination)
-                            .font(.system(size: 13, weight: .semibold))
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("返回")
+                            .font(.system(size: 14, weight: .medium))
                     }
                     .foregroundColor(Color(hex: "374151"))
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
                     .background(Color.white)
                     .cornerRadius(20)
-                    .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
+                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
                 }
                 
                 Spacer()
                 
-                Button(action: onNewPlan) {
-                    Image(systemName: "plus")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(Color(hex: "3B82F6"))
-                        .frame(width: 36, height: 36)
-                        .background(Color.white)
-                        .cornerRadius(18)
-                        .shadow(color: Color.black.opacity(0.08), radius: 8, x: 0, y: 2)
+                HStack(spacing: 12) {
+                    // 删除按钮
+                    if let onDelete = onDelete {
+                        Button(action: onDelete) {
+                            Image(systemName: "trash")
+                                .font(.system(size: 15, weight: .medium))
+                                .foregroundColor(Color(hex: "EF4444"))
+                                .frame(width: 36, height: 36)
+                                .background(Color.white)
+                                .cornerRadius(18)
+                                .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                        }
+                    }
+                    
+                    // 新建按钮
+                    Button(action: onNewPlan) {
+                        Image(systemName: "plus")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color(hex: "3B82F6"))
+                            .frame(width: 36, height: 36)
+                            .background(Color.white)
+                            .cornerRadius(18)
+                            .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                    }
                 }
             }
             .padding(.horizontal, 16)
-            .padding(.top, 50)
+            .padding(.top, 54)
         }
     }
 }
 
-// MARK: - 行程方案区域
+// MARK: - 可折叠底部面板
 
-struct DetailPlanSection: View {
+struct DetailCollapsibleSheet: View {
     let plan: TravelPlan
+    @Binding var isExpanded: Bool
+    @Binding var selectedAttraction: Attraction?
+    let collapsedHeight: CGFloat
+    let expandedHeight: CGFloat
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
-            // 圆角顶部
-            RoundedCornerTop()
+        VStack(spacing: 0) {
+            // 顶部控制栏（横杠 + 标题 + 箭头按钮）
+            DetailSheetControlBar(plan: plan, isExpanded: $isExpanded)
             
-            VStack(alignment: .leading, spacing: 20) {
-                // 标题
-                DetailPlanHeader(plan: plan)
-                
-                // 行程描述
-                PlanDescription(plan: plan)
-                
-                // 住宿推荐
-                if !plan.accommodations.isEmpty {
-                    AccommodationCard(zone: plan.accommodations.first!)
+            // 内容区域（展开时显示）
+            if isExpanded {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 20) {
+                        // 行程描述
+                        PlanDescription(plan: plan)
+                        
+                        // 住宿推荐
+                        if !plan.accommodations.isEmpty {
+                            AccommodationCard(zone: plan.accommodations.first!)
+                        }
+                        
+                        // 时间轴行程
+                        TimelineView(plan: plan, selectedAttraction: $selectedAttraction)
+                        
+                        // 创建时间
+                        HStack {
+                            Spacer()
+                            Text("创建于 \(formatDate(plan.createdAt))")
+                                .font(.system(size: 12))
+                                .foregroundColor(Color(hex: "9CA3AF"))
+                            Spacer()
+                        }
+                        .padding(.top, 8)
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.bottom, 40)
                 }
-                
-                // 时间轴行程
-                TimelineView(plan: plan)
-                
-                // 创建时间
-                HStack {
-                    Spacer()
-                    Text("创建于 \(formatDate(plan.createdAt))")
-                        .font(.system(size: 12))
-                        .foregroundColor(Color(hex: "9CA3AF"))
-                    Spacer()
-                }
-                .padding(.top, 16)
             }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 40)
         }
+        .frame(height: isExpanded ? expandedHeight : collapsedHeight)
         .background(Color.white)
+        .cornerRadius(24, corners: [.topLeft, .topRight])
+        .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
+        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isExpanded)
     }
     
     private func formatDate(_ date: Date) -> String {
@@ -125,30 +212,63 @@ struct DetailPlanSection: View {
     }
 }
 
-// MARK: - 标题区域
+// MARK: - 面板控制栏
 
-struct DetailPlanHeader: View {
+struct DetailSheetControlBar: View {
     let plan: TravelPlan
+    @Binding var isExpanded: Bool
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 4) {
-                Text("您的行程方案")
-                    .font(.system(size: 20, weight: .bold))
-                    .foregroundColor(Color(hex: "1F2937"))
-                
-                HStack(spacing: 8) {
-                    Text("\(plan.recommendedDays) 天")
-                    Text("·")
-                    Text("\(plan.route.attractionCount) 个景点")
-                    Text("·")
-                    Text(String(format: "%.1f km", plan.totalDistance))
-                }
-                .font(.system(size: 14))
-                .foregroundColor(Color(hex: "6B7280"))
+        VStack(spacing: 0) {
+            // 可点击的横杠
+            Button(action: {
+                isExpanded.toggle()
+            }) {
+                Capsule()
+                    .fill(Color(hex: "D1D5DB"))
+                    .frame(width: 36, height: 4)
+                    .padding(.top, 12)
+                    .padding(.bottom, 8)
+                    .frame(maxWidth: .infinity)
+                    .contentShape(Rectangle())
             }
+            .buttonStyle(PlainButtonStyle())
             
-            Spacer()
+            // 标题行 + 箭头按钮
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(plan.destination)
+                        .font(.system(size: 20, weight: .bold))
+                        .foregroundColor(Color(hex: "1F2937"))
+                    
+                    HStack(spacing: 8) {
+                        Text("\(plan.recommendedDays) 天")
+                        Text("·")
+                        Text("\(plan.route.attractionCount) 个景点")
+                        Text("·")
+                        Text(String(format: "%.1f km", plan.totalDistance))
+                    }
+                    .font(.system(size: 14))
+                    .foregroundColor(Color(hex: "6B7280"))
+                }
+                
+                Spacer()
+                
+                // 展开/收起箭头按钮
+                Button(action: {
+                    isExpanded.toggle()
+                }) {
+                    Image(systemName: isExpanded ? "chevron.down" : "chevron.up")
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(Color(hex: "6B7280"))
+                        .frame(width: 40, height: 40)
+                        .background(Color(hex: "F3F4F6"))
+                        .cornerRadius(20)
+                }
+                .buttonStyle(PlainButtonStyle())
+            }
+            .padding(.horizontal, 20)
+            .padding(.bottom, 12)
         }
     }
 }

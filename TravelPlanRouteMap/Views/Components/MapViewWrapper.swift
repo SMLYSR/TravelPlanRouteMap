@@ -12,6 +12,7 @@ struct MapViewWrapper: UIViewRepresentable {
     let attractions: [Attraction]
     let route: [Coordinate]
     let accommodationZones: [AccommodationZone]
+    var selectedAttraction: Attraction? = nil  // 选中的景点
     
     // MARK: - UIViewRepresentable
     
@@ -38,6 +39,17 @@ struct MapViewWrapper: UIViewRepresentable {
     }
     
     func updateUIView(_ mapView: MAMapView, context: Context) {
+        // 如果有选中的景点，聚焦到该景点
+        if let selected = selectedAttraction, let coordinate = selected.coordinate {
+            let center = CLLocationCoordinate2D(
+                latitude: coordinate.latitude,
+                longitude: coordinate.longitude
+            )
+            mapView.setCenter(center, animated: true)
+            mapView.setZoomLevel(15, animated: true)
+            return
+        }
+        
         // 清除现有标注
         if let annotations = mapView.annotations {
             mapView.removeAnnotations(annotations)

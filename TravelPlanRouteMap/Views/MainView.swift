@@ -18,6 +18,7 @@ struct MainView: View {
     @State private var selectedTravelMode: TravelMode = .driving
     @State private var attractionViewModel: AttractionViewModel?
     @StateObject private var resultViewModel = ResultViewModel()
+    @StateObject private var historyViewModel = HistoryViewModel()
     
     var body: some View {
         ZStack {
@@ -115,6 +116,9 @@ struct MainView: View {
                     },
                     onNewPlan: {
                         startNewPlan()
+                    },
+                    onDelete: {
+                        deletePlanAndGoBack(plan)
                     }
                 )
                 .transition(.asymmetric(
@@ -139,6 +143,11 @@ struct MainView: View {
             attractionViewModel = AttractionViewModel(destination: dest.name)
             attractionViewModel?.travelMode = selectedTravelMode
         }
+    }
+    
+    private func deletePlanAndGoBack(_ plan: TravelPlan) {
+        historyViewModel.deletePlan(plan)
+        navigationState = .home
     }
 }
 

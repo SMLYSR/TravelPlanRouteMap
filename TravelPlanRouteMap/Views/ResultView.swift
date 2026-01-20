@@ -64,6 +64,8 @@ struct TravelPlanContentView: View {
     
     // 面板展开/收起状态
     @State private var isExpanded: Bool = true
+    // 选中的景点（用于地图聚焦）
+    @State private var selectedAttraction: Attraction? = nil
     
     // 面板高度
     private let collapsedHeight: CGFloat = 90  // 收起时只显示标题栏
@@ -73,7 +75,12 @@ struct TravelPlanContentView: View {
         GeometryReader { geometry in
             ZStack {
                 // 全屏地图
-                FullScreenMapView(plan: plan, onBack: onBack, onRefresh: onRefresh)
+                FullScreenMapView(
+                    plan: plan,
+                    selectedAttraction: selectedAttraction,
+                    onBack: onBack,
+                    onRefresh: onRefresh
+                )
                 
                 // 可展开/收起的底部面板
                 VStack(spacing: 0) {
@@ -82,6 +89,7 @@ struct TravelPlanContentView: View {
                     CollapsibleSheet(
                         plan: plan,
                         isExpanded: $isExpanded,
+                        selectedAttraction: $selectedAttraction,
                         collapsedHeight: collapsedHeight,
                         expandedHeight: expandedHeight
                     )
@@ -152,6 +160,7 @@ struct MapSection: View {
 
 struct PlanSection: View {
     let plan: TravelPlan
+    @State private var selectedAttraction: Attraction? = nil
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -171,7 +180,7 @@ struct PlanSection: View {
                 }
                 
                 // 时间轴行程
-                TimelineView(plan: plan)
+                TimelineView(plan: plan, selectedAttraction: $selectedAttraction)
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 40)
@@ -269,6 +278,7 @@ struct AccommodationCard: View {
 
 struct TimelineView: View {
     let plan: TravelPlan
+    @Binding var selectedAttraction: Attraction?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -277,7 +287,8 @@ struct TimelineView: View {
                     day: dayGroup.day,
                     title: dayGroup.title,
                     attractions: dayGroup.attractions,
-                    isLastDay: dayGroup.day == plan.recommendedDays
+                    isLastDay: dayGroup.day == plan.recommendedDays,
+                    selectedAttraction: $selectedAttraction
                 )
             }
         }
@@ -326,6 +337,7 @@ struct DayTimelineView: View {
     let title: String
     let attractions: [Attraction]
     let isLastDay: Bool
+    @Binding var selectedAttraction: Attraction?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -350,7 +362,17 @@ struct DayTimelineView: View {
                 ForEach(Array(attractions.enumerated()), id: \.element.id) { index, attraction in
                     AttractionTimelineRow(
                         attraction: attraction,
-                        isLast: index == attractions.count - 1 && isLastDay
+                        isLast: index == attractions.count - 1 && isLastDay,
+                        isSelected: selectedAttraction?.id == attraction.id,
+                        onTap: {
+                            withAnimation(.easeInOut(duration: 0.2)) {
+                                if selectedAttraction?.id == attraction.id {
+                                    selectedAttraction = nil  // 取消选中
+                                } else {
+                                    selectedAttraction = attraction  // 选中
+                                }
+                            }
+                        }
                     )
                 }
             }
@@ -364,6 +386,8 @@ struct DayTimelineView: View {
 struct AttractionTimelineRow: View {
     let attraction: Attraction
     let isLast: Bool
+    var isSelected: Bool = false
+    var onTap: (() -> Void)? = nil
     
     // 根据景点类型估算游玩时间
     var estimatedDuration: String {
@@ -400,55 +424,69 @@ struct AttractionTimelineRow: View {
     }
     
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
-            // 左侧时间轴
-            VStack(spacing: 0) {
-                // 蓝色圆点
-                Circle()
-                    .fill(Color(hex: "3B82F6"))
-                    .frame(width: 10, height: 10)
-                
-                // 连接线
-                if !isLast {
-                    Rectangle()
-                        .fill(Color(hex: "E5E7EB"))
-                        .frame(width: 1)
-                        .frame(maxHeight: .infinity)
-                }
-            }
-            .frame(width: 10)
-            .padding(.leading, 8)
-            
-            // 右侧内容
-            VStack(alignment: .leading, spacing: 8) {
-                HStack {
-                    Text(attraction.name)
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(Color(hex: "1F2937"))
+        Button(action: {
+            onTap?()
+        }) {
+            HStack(alignment: .top, spacing: 16) {
+                // 左侧时间轴
+                VStack(spacing: 0) {
+                    // 蓝色圆点（选中时放大）
+                    Circle()
+                        .fill(Color(hex: "3B82F6"))
+                        .frame(width: isSelected ? 14 : 10, height: isSelected ? 14 : 10)
+                        .overlay(
+                            Circle()
+                                .stroke(Color(hex: "3B82F6").opacity(0.3), lineWidth: isSelected ? 4 : 0)
+                        )
                     
-                    Spacer()
-                    
-                    // 游玩时间标签
-                    HStack(spacing: 4) {
-                        Image(systemName: "clock")
-                            .font(.system(size: 11))
-                        Text(estimatedDuration)
-                            .font(.system(size: 12, weight: .medium))
+                    // 连接线
+                    if !isLast {
+                        Rectangle()
+                            .fill(Color(hex: "E5E7EB"))
+                            .frame(width: 1)
+                            .frame(maxHeight: .infinity)
                     }
-                    .foregroundColor(Color(hex: "3B82F6"))
-                    .padding(.horizontal, 10)
-                    .padding(.vertical, 5)
-                    .background(Color(hex: "EFF6FF"))
-                    .cornerRadius(12)
                 }
+                .frame(width: 14)
+                .padding(.leading, 6)
                 
-                Text(attractionDescription)
-                    .font(.system(size: 13))
-                    .foregroundColor(Color(hex: "6B7280"))
-                    .lineSpacing(5)
+                // 右侧内容
+                VStack(alignment: .leading, spacing: 8) {
+                    HStack {
+                        Text(attraction.name)
+                            .font(.system(size: 15, weight: .semibold))
+                            .foregroundColor(isSelected ? Color(hex: "3B82F6") : Color(hex: "1F2937"))
+                        
+                        Spacer()
+                        
+                        // 游玩时间标签
+                        HStack(spacing: 4) {
+                            Image(systemName: "clock")
+                                .font(.system(size: 11))
+                            Text(estimatedDuration)
+                                .font(.system(size: 12, weight: .medium))
+                        }
+                        .foregroundColor(Color(hex: "3B82F6"))
+                        .padding(.horizontal, 10)
+                        .padding(.vertical, 5)
+                        .background(Color(hex: "EFF6FF"))
+                        .cornerRadius(12)
+                    }
+                    
+                    Text(attractionDescription)
+                        .font(.system(size: 13))
+                        .foregroundColor(Color(hex: "6B7280"))
+                        .lineSpacing(5)
+                        .multilineTextAlignment(.leading)
+                }
+                .padding(.vertical, 12)
+                .padding(.horizontal, 12)
+                .background(isSelected ? Color(hex: "F0F9FF") : Color.clear)
+                .cornerRadius(12)
+                .padding(.bottom, isLast ? 0 : 12)
             }
-            .padding(.bottom, isLast ? 0 : 24)
         }
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -478,6 +516,7 @@ struct RoundedCorner: Shape {
 
 struct FullScreenMapView: View {
     let plan: TravelPlan
+    var selectedAttraction: Attraction? = nil
     var onBack: () -> Void
     var onRefresh: () -> Void
     
@@ -491,7 +530,8 @@ struct FullScreenMapView: View {
                 ),
                 attractions: plan.route.orderedAttractions,
                 route: plan.route.routePath,
-                accommodationZones: []
+                accommodationZones: [],
+                selectedAttraction: selectedAttraction
             )
             .ignoresSafeArea()
             
@@ -499,12 +539,12 @@ struct FullScreenMapView: View {
             HStack {
                 Button(action: onBack) {
                     HStack(spacing: 6) {
-                        Image(systemName: "sparkles")
-                            .font(.system(size: 13, weight: .semibold))
-                        Text("AI 智游")
-                            .font(.system(size: 13, weight: .semibold))
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 14, weight: .semibold))
+                        Text("返回")
+                            .font(.system(size: 14, weight: .medium))
                     }
-                    .foregroundColor(Color(hex: "3B82F6"))
+                    .foregroundColor(Color(hex: "374151"))
                     .padding(.horizontal, 14)
                     .padding(.vertical, 8)
                     .background(Color.white)
@@ -537,6 +577,7 @@ struct FullScreenMapView: View {
 struct CollapsibleSheet: View {
     let plan: TravelPlan
     @Binding var isExpanded: Bool
+    @Binding var selectedAttraction: Attraction?
     let collapsedHeight: CGFloat
     let expandedHeight: CGFloat
     
@@ -558,7 +599,7 @@ struct CollapsibleSheet: View {
                         }
                         
                         // 时间轴行程
-                        TimelineView(plan: plan)
+                        TimelineView(plan: plan, selectedAttraction: $selectedAttraction)
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
