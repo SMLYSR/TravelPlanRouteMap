@@ -100,7 +100,7 @@ struct DetailFullScreenMapView: View {
                     span: MapSpan(latitudeDelta: 0.8, longitudeDelta: 0.8)
                 ),
                 attractions: plan.route.orderedAttractions,
-                route: plan.route.routePath,
+                route: plan.navigationPath?.allCoordinates ?? plan.route.routePath,  // 优先使用导航路径，否则使用直线路径
                 accommodationZones: plan.accommodations,
                 selectedAttraction: selectedAttraction,
                 selectedAccommodationZone: selectedAccommodationZone

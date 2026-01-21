@@ -41,12 +41,6 @@ class ResultViewModel: ObservableObject {
                 travelMode: travelMode
             )
             
-            // 保存到本地存储
-            try repository.savePlan(plan)
-            
-            travelPlan = plan
-            isSaved = true  // 新增：标记已保存
-            
             // 规划导航路线（获取实际道路路径）
             // 需求: 1.4, 6.2
             await planNavigationRoute(
@@ -54,6 +48,25 @@ class ResultViewModel: ObservableObject {
                 travelMode: travelMode ?? .driving,
                 citycode: citycode  // 传递citycode
             )
+            
+            // 创建包含导航路径的完整计划
+            let planWithNavigation = TravelPlan(
+                id: plan.id,
+                destination: plan.destination,
+                route: plan.route,
+                recommendedDays: plan.recommendedDays,
+                accommodations: plan.accommodations,
+                totalDistance: plan.totalDistance,
+                createdAt: plan.createdAt,
+                travelMode: plan.travelMode,
+                navigationPath: navigationPath  // 保存导航路径
+            )
+            
+            // 保存到本地存储（包含导航路径）
+            try repository.savePlan(planWithNavigation)
+            
+            travelPlan = planWithNavigation
+            isSaved = true  // 新增：标记已保存
             
             isLoading = false
             HapticFeedback.success()
