@@ -175,6 +175,7 @@ struct MapSection: View {
 struct PlanSection: View {
     let plan: TravelPlan
     @State private var selectedAttraction: Attraction? = nil
+    @State private var selectedAccommodationZone: AccommodationZone? = nil
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -190,11 +191,21 @@ struct PlanSection: View {
                 
                 // 住宿推荐
                 if !plan.accommodations.isEmpty {
-                    AccommodationCard(zone: plan.accommodations.first!)
+                    AccommodationCard(zone: plan.accommodations.first!) {
+                        // 点击住宿卡片时聚焦到该区域
+                        withAnimation(.easeInOut(duration: 0.3)) {
+                            selectedAccommodationZone = plan.accommodations.first
+                            selectedAttraction = nil  // 取消景点选中
+                        }
+                    }
                 }
                 
                 // 时间轴行程
-                TimelineView(plan: plan, selectedAttraction: $selectedAttraction)
+                TimelineView(
+                    plan: plan,
+                    selectedAttraction: $selectedAttraction,
+                    selectedAccommodationZone: $selectedAccommodationZone
+                )
             }
             .padding(.horizontal, 20)
             .padding(.bottom, 40)
@@ -306,6 +317,7 @@ struct AccommodationCard: View {
 struct TimelineView: View {
     let plan: TravelPlan
     @Binding var selectedAttraction: Attraction?
+    @Binding var selectedAccommodationZone: AccommodationZone?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
@@ -315,7 +327,8 @@ struct TimelineView: View {
                     title: dayGroup.title,
                     attractions: dayGroup.attractions,
                     isLastDay: dayGroup.day == plan.recommendedDays,
-                    selectedAttraction: $selectedAttraction
+                    selectedAttraction: $selectedAttraction,
+                    selectedAccommodationZone: $selectedAccommodationZone
                 )
             }
         }
@@ -365,6 +378,7 @@ struct DayTimelineView: View {
     let attractions: [Attraction]
     let isLastDay: Bool
     @Binding var selectedAttraction: Attraction?
+    @Binding var selectedAccommodationZone: AccommodationZone?
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -397,6 +411,7 @@ struct DayTimelineView: View {
                                     selectedAttraction = nil  // 取消选中
                                 } else {
                                     selectedAttraction = attraction  // 选中
+                                    selectedAccommodationZone = nil  // 清除住宿区域选中
                                 }
                             }
                         }
@@ -671,7 +686,11 @@ struct CollapsibleSheet: View {
                         }
                         
                         // 时间轴行程
-                        TimelineView(plan: plan, selectedAttraction: $selectedAttraction)
+                        TimelineView(
+                            plan: plan,
+                            selectedAttraction: $selectedAttraction,
+                            selectedAccommodationZone: $selectedAccommodationZone
+                        )
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
