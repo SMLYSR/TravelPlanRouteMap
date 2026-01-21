@@ -12,7 +12,7 @@ struct RouteSegment: Codable, Equatable {
     /// 路径坐标点序列（实际道路级别）
     let pathCoordinates: [Coordinate]
     
-    /// 出行方式
+    /// 出行方式x
     let travelMode: TravelMode
     
     /// 预计距离（米）

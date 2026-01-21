@@ -13,6 +13,7 @@ struct MapViewWrapper: UIViewRepresentable {
     let route: [Coordinate]
     let accommodationZones: [AccommodationZone]
     var selectedAttraction: Attraction? = nil  // 选中的景点
+    var selectedAccommodationZone: AccommodationZone? = nil  // 选中的住宿区域
     
     /// 导航路径（可选）- 优先使用此属性绘制路线
     /// 当navigationPath不为nil时，使用其allCoordinates绘制实际道路路线
@@ -58,7 +59,29 @@ struct MapViewWrapper: UIViewRepresentable {
     }
     
     func updateUIView(_ mapView: MAMapView, context: Context) {
-        // 性能优化：只在选中景点变化时更新视图
+        // 优先处理住宿区域选中
+        if let selectedZone = selectedAccommodationZone {
+            // 检查是否需要更新选中状态
+            if context.coordinator.lastSelectedAccommodationZoneId != selectedZone.id {
+                context.coordinator.lastSelectedAccommodationZoneId = selectedZone.id
+                context.coordinator.lastSelectedAttractionId = nil  // 清除景点选中
+                
+                let center = CLLocationCoordinate2D(
+                    latitude: selectedZone.center.latitude,
+                    longitude: selectedZone.center.longitude
+                )
+                mapView.setCenter(center, animated: true)
+                
+                // 根据半径计算合适的缩放级别
+                let zoomLevel = calculateZoomLevel(for: selectedZone.radius)
+                mapView.setZoomLevel(zoomLevel, animated: true)
+            }
+            return
+        } else {
+            context.coordinator.lastSelectedAccommodationZoneId = nil
+        }
+        
+        // 处理景点选中
         if let selected = selectedAttraction, let coordinate = selected.coordinate {
             // 检查是否需要更新选中状态
             if context.coordinator.lastSelectedAttractionId != selected.id {
@@ -94,6 +117,23 @@ struct MapViewWrapper: UIViewRepresentable {
         }
     }
     
+    /// 根据半径计算合适的缩放级别
+    private func calculateZoomLevel(for radius: Double) -> CGFloat {
+        // 半径越大，缩放级别越小（显示范围越大）
+        // 半径单位：米
+        if radius > 5000 {
+            return 11
+        } else if radius > 3000 {
+            return 12
+        } else if radius > 2000 {
+            return 13
+        } else if radius > 1000 {
+            return 14
+        } else {
+            return 15
+        }
+    }
+    
     func makeCoordinator() -> Coordinator {
         Coordinator()
     }
@@ -108,6 +148,7 @@ struct MapViewWrapper: UIViewRepresentable {
         private var lastAccommodationZonesCount: Int = 0
         private var lastNavigationPathCount: Int = 0
         var lastSelectedAttractionId: String? = nil
+        var lastSelectedAccommodationZoneId: String? = nil
         
         // 缓存标注视图，避免重复创建
         private var annotationImageCache: [String: UIImage] = [:]

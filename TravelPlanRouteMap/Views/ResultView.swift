@@ -70,6 +70,8 @@ struct TravelPlanContentView: View {
     @State private var isExpanded: Bool = true
     // 选中的景点（用于地图聚焦）
     @State private var selectedAttraction: Attraction? = nil
+    // 选中的住宿区域（用于地图聚焦）
+    @State private var selectedAccommodationZone: AccommodationZone? = nil
     
     // 面板高度 - 使用固定值避免 GeometryReader
     private let collapsedHeight: CGFloat = 90
@@ -82,6 +84,7 @@ struct TravelPlanContentView: View {
                 plan: plan,
                 navigationPath: navigationPath,
                 selectedAttraction: selectedAttraction,
+                selectedAccommodationZone: selectedAccommodationZone,
                 onBack: onBack,
                 onRefresh: onRefresh
             )
@@ -94,6 +97,7 @@ struct TravelPlanContentView: View {
                     plan: plan,
                     isExpanded: $isExpanded,
                     selectedAttraction: $selectedAttraction,
+                    selectedAccommodationZone: $selectedAccommodationZone,
                     collapsedHeight: collapsedHeight,
                     expandedHeight: expandedHeight
                 )
@@ -247,33 +251,46 @@ struct PlanDescription: View {
 
 struct AccommodationCard: View {
     let zone: AccommodationZone
+    var onTap: (() -> Void)? = nil
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(zone.name)
-                    .font(.system(size: 15, weight: .semibold))
-                    .foregroundColor(Color(hex: "1F2937"))
-                
-                Spacer()
-                
-                Text("优选")
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(Color(hex: "3B82F6"))
+        Button(action: {
+            onTap?()
+        }) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(zone.name)
+                        .font(.system(size: 15, weight: .semibold))
+                        .foregroundColor(Color(hex: "1F2937"))
+                    
+                    Spacer()
+                    
+                    HStack(spacing: 4) {
+                        Text("优选")
+                            .font(.system(size: 12, weight: .medium))
+                            .foregroundColor(Color(hex: "3B82F6"))
+                        
+                        Image(systemName: "location.fill")
+                            .font(.system(size: 11))
+                            .foregroundColor(Color(hex: "3B82F6"))
+                    }
                     .padding(.horizontal, 10)
                     .padding(.vertical, 4)
                     .background(Color(hex: "EFF6FF"))
                     .cornerRadius(4)
+                }
+                
+                Text("考虑到自驾前往各景点的行程，周边的酒店设施更新更舒适，商务氛围浓厚。此区域停车方便，更贴合自驾用户的舒适住宿需求。")
+                    .font(.system(size: 13))
+                    .foregroundColor(Color(hex: "6B7280"))
+                    .lineSpacing(5)
+                    .multilineTextAlignment(.leading)
             }
-            
-            Text("考虑到自驾前往各景点的行程，周边的酒店设施更新更舒适，商务氛围浓厚。此区域停车方便，更贴合自驾用户的舒适住宿需求。")
-                .font(.system(size: 13))
-                .foregroundColor(Color(hex: "6B7280"))
-                .lineSpacing(5)
+            .padding(16)
+            .background(Color(hex: "F9FAFB"))
+            .cornerRadius(12)
         }
-        .padding(16)
-        .background(Color(hex: "F9FAFB"))
-        .cornerRadius(12)
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -523,6 +540,7 @@ struct FullScreenMapView: View {
     /// 需求: 3.4, 6.3
     var navigationPath: NavigationPath? = nil
     var selectedAttraction: Attraction? = nil
+    var selectedAccommodationZone: AccommodationZone? = nil
     var onBack: () -> Void
     var onRefresh: () -> Void
     
@@ -538,6 +556,7 @@ struct FullScreenMapView: View {
                 route: plan.route.routePath,
                 accommodationZones: plan.accommodations,
                 selectedAttraction: selectedAttraction,
+                selectedAccommodationZone: selectedAccommodationZone,
                 navigationPath: navigationPath
             )
             .ignoresSafeArea()
@@ -585,16 +604,32 @@ struct CollapsibleSheet: View {
     let plan: TravelPlan
     @Binding var isExpanded: Bool
     @Binding var selectedAttraction: Attraction?
+    @Binding var selectedAccommodationZone: AccommodationZone?
     let collapsedHeight: CGFloat
     let expandedHeight: CGFloat
+    
+    // 拖动状态
+    @State private var dragOffset: CGFloat = 0
+    @State private var lastDragValue: CGFloat = 0
+    
+    // 计算当前高度
+    private var currentHeight: CGFloat {
+        let baseHeight = isExpanded ? expandedHeight : collapsedHeight
+        return max(collapsedHeight, min(expandedHeight, baseHeight - dragOffset))
+    }
     
     var body: some View {
         VStack(spacing: 0) {
             // 顶部控制栏（横杠 + 标题 + 箭头按钮）
-            SheetControlBar(plan: plan, isExpanded: $isExpanded)
+            SheetControlBar(
+                plan: plan,
+                isExpanded: $isExpanded,
+                onDragChanged: handleDragChanged,
+                onDragEnded: handleDragEnded
+            )
             
             // 内容区域（展开时显示）
-            if isExpanded {
+            if isExpanded || dragOffset < 0 {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 20) {
                         // 行程描述
@@ -602,7 +637,13 @@ struct CollapsibleSheet: View {
                         
                         // 住宿推荐
                         if !plan.accommodations.isEmpty {
-                            AccommodationCard(zone: plan.accommodations.first!)
+                            AccommodationCard(zone: plan.accommodations.first!) {
+                                // 点击住宿卡片时聚焦到该区域
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    selectedAccommodationZone = plan.accommodations.first
+                                    selectedAttraction = nil  // 取消景点选中
+                                }
+                            }
                         }
                         
                         // 时间轴行程
@@ -611,13 +652,46 @@ struct CollapsibleSheet: View {
                     .padding(.horizontal, 20)
                     .padding(.bottom, 40)
                 }
+                .opacity(currentHeight > collapsedHeight + 50 ? 1 : 0)
             }
         }
-        .frame(height: isExpanded ? expandedHeight : collapsedHeight)
+        .frame(height: currentHeight)
         .background(Color.white)
         .cornerRadius(24, corners: [.topLeft, .topRight])
         .shadow(color: Color.black.opacity(0.1), radius: 10, x: 0, y: -5)
-        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: isExpanded)
+    }
+    
+    // 处理拖动变化
+    private func handleDragChanged(_ value: CGFloat) {
+        dragOffset = value
+    }
+    
+    // 处理拖动结束
+    private func handleDragEnded(_ value: CGFloat) {
+        let velocity = value - lastDragValue
+        lastDragValue = value
+        
+        // 根据拖动距离和速度决定展开或收起
+        let threshold = (expandedHeight - collapsedHeight) / 3
+        
+        withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+            if isExpanded {
+                // 当前是展开状态
+                if dragOffset > threshold || velocity > 5 {
+                    // 向下拖动超过阈值或速度够快，收起
+                    isExpanded = false
+                }
+            } else {
+                // 当前是收起状态
+                if dragOffset < -threshold || velocity < -5 {
+                    // 向上拖动超过阈值或速度够快，展开
+                    isExpanded = true
+                }
+            }
+            
+            // 重置拖动偏移
+            dragOffset = 0
+        }
     }
 }
 
@@ -626,22 +700,30 @@ struct CollapsibleSheet: View {
 struct SheetControlBar: View {
     let plan: TravelPlan
     @Binding var isExpanded: Bool
+    var onDragChanged: ((CGFloat) -> Void)?
+    var onDragEnded: ((CGFloat) -> Void)?
     
     var body: some View {
         VStack(spacing: 0) {
-            // 可点击的横杠
-            Button(action: {
-                isExpanded.toggle()
-            }) {
+            // 可拖动的横杠区域
+            VStack(spacing: 0) {
                 Capsule()
                     .fill(Color(hex: "D1D5DB"))
                     .frame(width: 36, height: 4)
                     .padding(.top, 12)
                     .padding(.bottom, 8)
-                    .frame(maxWidth: .infinity)
-                    .contentShape(Rectangle())
             }
-            .buttonStyle(PlainButtonStyle())
+            .frame(maxWidth: .infinity)
+            .contentShape(Rectangle())
+            .gesture(
+                DragGesture()
+                    .onChanged { value in
+                        onDragChanged?(value.translation.height)
+                    }
+                    .onEnded { value in
+                        onDragEnded?(value.translation.height)
+                    }
+            )
             
             // 标题行 + 箭头按钮
             HStack {
@@ -659,7 +741,9 @@ struct SheetControlBar: View {
                 
                 // 展开/收起箭头按钮
                 Button(action: {
-                    isExpanded.toggle()
+                    withAnimation(.spring(response: 0.4, dampingFraction: 0.8)) {
+                        isExpanded.toggle()
+                    }
                 }) {
                     Image(systemName: isExpanded ? "chevron.down" : "chevron.up")
                         .font(.system(size: 16, weight: .medium))

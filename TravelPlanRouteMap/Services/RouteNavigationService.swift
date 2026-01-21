@@ -42,6 +42,10 @@ class RouteNavigationService: NSObject, RouteNavigationServiceProtocol {
     private var currentDestination: Coordinate?
     private var currentTravelMode: TravelMode?
     
+    // 限流控制：请求之间的最小间隔（毫秒）
+    private let requestInterval: UInt64 = 300_000_000  // 300ms = 0.3秒
+    private var lastRequestTime: UInt64 = 0
+    
     override init() {
         super.init()
         if let api = AMapSearchAPI() {
@@ -71,21 +75,28 @@ class RouteNavigationService: NSObject, RouteNavigationServiceProtocol {
         
         var segments: [RouteSegment] = []
         
+        print("📍 开始规划 \(validAttractions.count - 1) 段路线，使用限流策略避免 QPS 超限")
+        
         // 按顺序规划每段路线（需求 2.2）
+        // 注意：这里是串行执行，避免并发请求导致 QPS 超限
         for i in 0..<(validAttractions.count - 1) {
             let origin = validAttractions[i].coordinate!
             let destination = validAttractions[i + 1].coordinate!
             
+            // 限流：确保请求之间有足够的间隔
+            await throttleRequest()
+            
             do {
-                let segment = try await planSegment(
+                let segment = try await planSegmentWithRetry(
                     from: origin,
                     to: destination,
-                    travelMode: travelMode
+                    travelMode: travelMode,
+                    maxRetries: 2
                 )
                 segments.append(segment)
             } catch {
                 // 需求 2.4: 某一段路线规划失败时，使用直线连接作为降级方案
-                print("⚠️ 路线段规划失败，使用降级方案: \(error.localizedDescription)")
+                print("⚠️ 路线段规划失败（已重试），使用降级方案: \(error.localizedDescription)")
                 let fallbackSegment = createFallbackSegment(
                     from: origin,
                     to: destination,
@@ -96,6 +107,60 @@ class RouteNavigationService: NSObject, RouteNavigationServiceProtocol {
         }
         
         return NavigationPath(segments: segments, travelMode: travelMode)
+    }
+    
+    /// 限流：确保请求之间有足够的间隔
+    private func throttleRequest() async {
+        let now = DispatchTime.now().uptimeNanoseconds
+        let elapsed = now - lastRequestTime
+        
+        if elapsed < requestInterval {
+            let waitTime = requestInterval - elapsed
+            print("⏱️ 限流等待 \(Double(waitTime) / 1_000_000)ms")
+            try? await Task.sleep(nanoseconds: waitTime)
+        }
+        
+        lastRequestTime = DispatchTime.now().uptimeNanoseconds
+    }
+    
+    /// 带重试的路线规划
+    private func planSegmentWithRetry(
+        from origin: Coordinate,
+        to destination: Coordinate,
+        travelMode: TravelMode,
+        maxRetries: Int
+    ) async throws -> RouteSegment {
+        var lastError: Error?
+        
+        for attempt in 0...maxRetries {
+            do {
+                if attempt > 0 {
+                    print("🔄 重试第 \(attempt) 次...")
+                    // 重试前等待更长时间
+                    try await Task.sleep(nanoseconds: 500_000_000)  // 500ms
+                }
+                
+                return try await planSegment(
+                    from: origin,
+                    to: destination,
+                    travelMode: travelMode
+                )
+            } catch let error as NSError {
+                lastError = error
+                
+                // 如果是 QPS 超限错误，继续重试
+                if error.code == 10021 {
+                    print("⚠️ QPS 超限，等待后重试...")
+                    continue
+                } else {
+                    // 其他错误直接抛出
+                    throw error
+                }
+            }
+        }
+        
+        // 所有重试都失败，抛出最后一个错误
+        throw lastError ?? RouteNavigationError.routePlanningFailed("重试失败")
     }
     
     /// 规划单段路线
