@@ -4,6 +4,7 @@ import SwiftUI
 struct ResultView: View {
     @ObservedObject var viewModel: ResultViewModel
     let destination: String
+    let citycode: String?  // 城市代码,用于公交路线规划
     let attractions: [Attraction]
     let travelMode: TravelMode?
     var onBack: () -> Void
@@ -20,6 +21,7 @@ struct ResultView: View {
                 ErrorOverlay(message: error) {
                     viewModel.retry(
                         destination: destination,
+                        citycode: citycode,
                         attractions: attractions,
                         travelMode: travelMode
                     )
@@ -29,11 +31,13 @@ struct ResultView: View {
                 TravelPlanContentView(
                     plan: plan,
                     navigationPath: viewModel.navigationPath,
+                    isSaved: viewModel.isSaved,  // 新增：传递保存状态
                     onBack: onBack,
                     onRefresh: {
                         Task {
                             await viewModel.planRoute(
                                 destination: destination,
+                                citycode: citycode,
                                 attractions: attractions,
                                 travelMode: travelMode
                             )
@@ -47,6 +51,7 @@ struct ResultView: View {
                 Task {
                     await viewModel.planRoute(
                         destination: destination,
+                        citycode: citycode,
                         attractions: attractions,
                         travelMode: travelMode
                     )
@@ -63,6 +68,7 @@ struct TravelPlanContentView: View {
     /// 导航路径（用于显示实际道路路线）
     /// 需求: 3.4, 6.3
     var navigationPath: NavigationPath? = nil
+    var isSaved: Bool = false  // 新增：保存状态
     var onBack: () -> Void
     var onRefresh: () -> Void
     
@@ -85,6 +91,7 @@ struct TravelPlanContentView: View {
                 navigationPath: navigationPath,
                 selectedAttraction: selectedAttraction,
                 selectedAccommodationZone: selectedAccommodationZone,
+                isSaved: isSaved,  // 新增：传递保存状态
                 onBack: onBack,
                 onRefresh: onRefresh
             )
@@ -541,6 +548,7 @@ struct FullScreenMapView: View {
     var navigationPath: NavigationPath? = nil
     var selectedAttraction: Attraction? = nil
     var selectedAccommodationZone: AccommodationZone? = nil
+    var isSaved: Bool = false  // 新增：保存状态
     var onBack: () -> Void
     var onRefresh: () -> Void
     
@@ -579,6 +587,22 @@ struct FullScreenMapView: View {
                 }
                 
                 Spacer()
+                
+                // 新增：保存状态指示器
+                if isSaved {
+                    HStack(spacing: 6) {
+                        Image(systemName: "checkmark.circle.fill")
+                            .font(.system(size: 13, weight: .semibold))
+                        Text("已保存")
+                            .font(.system(size: 13, weight: .medium))
+                    }
+                    .foregroundColor(.green)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 8)
+                    .background(Color.green.opacity(0.1))
+                    .cornerRadius(20)
+                    .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                }
                 
                 Button(action: onRefresh) {
                     Image(systemName: "arrow.clockwise")
@@ -844,6 +868,7 @@ struct ErrorOverlay: View {
     ResultView(
         viewModel: ResultViewModel(),
         destination: "成都",
+        citycode: "028",  // 成都城市代码
         attractions: [
             Attraction(name: "熊猫谷", coordinate: Coordinate(latitude: 31.0, longitude: 103.6)),
             Attraction(name: "都江堰", coordinate: Coordinate(latitude: 30.9, longitude: 103.5)),

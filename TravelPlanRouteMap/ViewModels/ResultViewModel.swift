@@ -7,6 +7,7 @@ class ResultViewModel: ObservableObject {
     @Published var travelPlan: TravelPlan?
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
+    @Published var isSaved: Bool = false  // 新增：保存状态标记
     
     /// 导航路径（用于地图显示实际道路路线）
     /// 需求: 1.4, 6.2
@@ -27,10 +28,11 @@ class ResultViewModel: ObservableObject {
     }
     
     /// 规划路线
-    func planRoute(destination: String, attractions: [Attraction], travelMode: TravelMode?) async {
+    func planRoute(destination: String, citycode: String?, attractions: [Attraction], travelMode: TravelMode?) async {
         isLoading = true
         errorMessage = nil
         navigationPath = nil
+        isSaved = false  // 新增：重置保存状态
         
         do {
             let plan = try await planningService.planRoute(
@@ -43,12 +45,14 @@ class ResultViewModel: ObservableObject {
             try repository.savePlan(plan)
             
             travelPlan = plan
+            isSaved = true  // 新增：标记已保存
             
             // 规划导航路线（获取实际道路路径）
             // 需求: 1.4, 6.2
             await planNavigationRoute(
                 attractions: plan.route.orderedAttractions,
-                travelMode: travelMode ?? .driving
+                travelMode: travelMode ?? .driving,
+                citycode: citycode  // 传递citycode
             )
             
             isLoading = false
@@ -66,11 +70,12 @@ class ResultViewModel: ObservableObject {
     
     /// 规划导航路线（获取实际道路路径）
     /// 需求: 1.4, 6.2
-    private func planNavigationRoute(attractions: [Attraction], travelMode: TravelMode) async {
+    private func planNavigationRoute(attractions: [Attraction], travelMode: TravelMode, citycode: String?) async {
         do {
             let navPath = try await routeNavigationService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: citycode
             )
             navigationPath = navPath
             
@@ -86,9 +91,9 @@ class ResultViewModel: ObservableObject {
     }
     
     /// 重试规划
-    func retry(destination: String, attractions: [Attraction], travelMode: TravelMode?) {
+    func retry(destination: String, citycode: String?, attractions: [Attraction], travelMode: TravelMode?) {
         Task {
-            await planRoute(destination: destination, attractions: attractions, travelMode: travelMode)
+            await planRoute(destination: destination, citycode: citycode, attractions: attractions, travelMode: travelMode)
         }
     }
     
@@ -97,5 +102,6 @@ class ResultViewModel: ObservableObject {
         travelPlan = nil
         errorMessage = nil
         navigationPath = nil
+        isSaved = false  // 新增：重置保存状态
     }
 }

@@ -33,7 +33,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When - 规划导航路线
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 验证路线段数量等于N-1
@@ -62,7 +63,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 应返回恰好1个路线段
@@ -87,7 +89,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then
@@ -113,7 +116,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
                 // When
                 let navigationPath = try await mockService.planNavigationRoute(
                     attractions: attractions,
-                    travelMode: mode
+                    travelMode: mode,
+                    citycode: nil
                 )
                 
                 // Then
@@ -190,7 +194,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When - 规划导航路线
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 验证每个路线段的起点和终点与对应景点坐标一致
@@ -245,7 +250,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 应有1个路线段，起点为第一个景点，终点为第二个景点
@@ -296,7 +302,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 验证所有路线段的顺序一致性
@@ -355,7 +362,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
                 // When
                 let navigationPath = try await mockService.planNavigationRoute(
                     attractions: attractions,
-                    travelMode: mode
+                    travelMode: mode,
+                    citycode: nil
                 )
                 
                 // Then - 验证每个路线段的顺序一致性
@@ -409,7 +417,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 验证相邻路线段的连续性
@@ -683,7 +692,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When - 规划导航路线（服务会返回降级路线段）
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 验证所有路线段都是降级路线段
@@ -757,7 +767,8 @@ final class RouteNavigationServicePropertyTests: XCTestCase {
             // When - 规划导航路线
             let navigationPath = try await mockService.planNavigationRoute(
                 attractions: attractions,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: nil
             )
             
             // Then - 验证路线段数量正确
@@ -880,7 +891,8 @@ class MockRouteNavigationService: RouteNavigationServiceProtocol {
     /// 对于N个景点，返回N-1个路线段
     func planNavigationRoute(
         attractions: [Attraction],
-        travelMode: TravelMode
+        travelMode: TravelMode,
+        citycode: String?
     ) async throws -> NavigationPath {
         // 过滤出有有效坐标的景点
         let validAttractions = attractions.filter { $0.coordinate != nil }
@@ -899,7 +911,8 @@ class MockRouteNavigationService: RouteNavigationServiceProtocol {
             let segment = try await planSegment(
                 from: origin,
                 to: destination,
-                travelMode: travelMode
+                travelMode: travelMode,
+                citycode: citycode
             )
             segments.append(segment)
         }
@@ -911,7 +924,8 @@ class MockRouteNavigationService: RouteNavigationServiceProtocol {
     func planSegment(
         from origin: Coordinate,
         to destination: Coordinate,
-        travelMode: TravelMode
+        travelMode: TravelMode,
+        citycode: String?
     ) async throws -> RouteSegment {
         // 生成模拟的路径坐标点（简单的直线插值）
         let pathCoordinateCount = Int.random(in: 5...15)
@@ -980,7 +994,8 @@ class MockFailingRouteNavigationService: RouteNavigationServiceProtocol {
     /// 模拟规划导航路线（总是返回降级路线段）
     func planNavigationRoute(
         attractions: [Attraction],
-        travelMode: TravelMode
+        travelMode: TravelMode,
+        citycode: String?
     ) async throws -> NavigationPath {
         let validAttractions = attractions.filter { $0.coordinate != nil }
         
@@ -1010,7 +1025,8 @@ class MockFailingRouteNavigationService: RouteNavigationServiceProtocol {
     func planSegment(
         from origin: Coordinate,
         to destination: Coordinate,
-        travelMode: TravelMode
+        travelMode: TravelMode,
+        citycode: String?
     ) async throws -> RouteSegment {
         throw RouteNavigationError.routePlanningFailed("模拟API失败")
     }
@@ -1032,7 +1048,8 @@ class MockPartialFailingRouteNavigationService: RouteNavigationServiceProtocol {
     /// 模拟规划导航路线（部分路线段可能失败）
     func planNavigationRoute(
         attractions: [Attraction],
-        travelMode: TravelMode
+        travelMode: TravelMode,
+        citycode: String?
     ) async throws -> NavigationPath {
         let validAttractions = attractions.filter { $0.coordinate != nil }
         
@@ -1060,7 +1077,8 @@ class MockPartialFailingRouteNavigationService: RouteNavigationServiceProtocol {
                 let segment = try await planSegment(
                     from: origin,
                     to: destination,
-                    travelMode: travelMode
+                    travelMode: travelMode,
+                    citycode: citycode
                 )
                 segments.append(segment)
             }
@@ -1073,7 +1091,8 @@ class MockPartialFailingRouteNavigationService: RouteNavigationServiceProtocol {
     func planSegment(
         from origin: Coordinate,
         to destination: Coordinate,
-        travelMode: TravelMode
+        travelMode: TravelMode,
+        citycode: String?
     ) async throws -> RouteSegment {
         // 生成模拟的路径坐标点
         let pathCoordinateCount = Int.random(in: 5...15)

@@ -46,6 +46,11 @@ struct MainView: View {
                         withAnimation(.easeInOut(duration: 0.25)) {
                             navigationState = .travelMode
                         }
+                    },
+                    onBack: {  // 新增：返回首页
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .home
+                        }
                     }
                 )
                 .transition(.asymmetric(
@@ -110,11 +115,14 @@ struct MainView: View {
                     ResultView(
                         viewModel: resultViewModel,
                         destination: dest.name,
+                        citycode: dest.citycode,  // 传递citycode
                         attractions: vm.attractions,
                         travelMode: selectedTravelMode,
-                        onBack: {
+                        onBack: {  // 修改：返回首页并刷新列表
+                            historyViewModel.loadPlans()
+                            
                             withAnimation(.easeInOut(duration: 0.25)) {
-                                navigationState = .attractions
+                                navigationState = .home
                             }
                         },
                         onNewPlan: {
