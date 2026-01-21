@@ -45,34 +45,32 @@ struct DetailContentView: View {
     // 选中的景点（用于地图聚焦）
     @State private var selectedAttraction: Attraction? = nil
     
-    // 面板高度
+    // 面板高度 - 使用固定值避免 GeometryReader
     private let collapsedHeight: CGFloat = 90
-    private var expandedHeight: CGFloat { UIScreen.main.bounds.height - 180 }
+    private let expandedHeight: CGFloat = UIScreen.main.bounds.height - 180
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // 全屏地图
-                DetailFullScreenMapView(
-                    plan: plan,
-                    selectedAttraction: selectedAttraction,
-                    onBack: onBack,
-                    onNewPlan: onNewPlan,
-                    onDelete: onDelete
-                )
+        ZStack {
+            // 全屏地图
+            DetailFullScreenMapView(
+                plan: plan,
+                selectedAttraction: selectedAttraction,
+                onBack: onBack,
+                onNewPlan: onNewPlan,
+                onDelete: onDelete
+            )
+            
+            // 可展开/收起的底部面板
+            VStack(spacing: 0) {
+                Spacer()
                 
-                // 可展开/收起的底部面板
-                VStack(spacing: 0) {
-                    Spacer()
-                    
-                    DetailCollapsibleSheet(
-                        plan: plan,
-                        isExpanded: $isExpanded,
-                        selectedAttraction: $selectedAttraction,
-                        collapsedHeight: collapsedHeight,
-                        expandedHeight: expandedHeight
-                    )
-                }
+                DetailCollapsibleSheet(
+                    plan: plan,
+                    isExpanded: $isExpanded,
+                    selectedAttraction: $selectedAttraction,
+                    collapsedHeight: collapsedHeight,
+                    expandedHeight: expandedHeight
+                )
             }
         }
         .ignoresSafeArea(edges: .bottom)

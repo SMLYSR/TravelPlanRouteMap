@@ -28,6 +28,7 @@ struct ResultView: View {
                 // 主内容
                 TravelPlanContentView(
                     plan: plan,
+                    navigationPath: viewModel.navigationPath,
                     onBack: onBack,
                     onRefresh: {
                         Task {
@@ -59,6 +60,9 @@ struct ResultView: View {
 
 struct TravelPlanContentView: View {
     let plan: TravelPlan
+    /// 导航路径（用于显示实际道路路线）
+    /// 需求: 3.4, 6.3
+    var navigationPath: NavigationPath? = nil
     var onBack: () -> Void
     var onRefresh: () -> Void
     
@@ -67,33 +71,32 @@ struct TravelPlanContentView: View {
     // 选中的景点（用于地图聚焦）
     @State private var selectedAttraction: Attraction? = nil
     
-    // 面板高度
-    private let collapsedHeight: CGFloat = 90  // 收起时只显示标题栏
-    private var expandedHeight: CGFloat { UIScreen.main.bounds.height - 180 }  // 展开时的高度
+    // 面板高度 - 使用固定值避免 GeometryReader
+    private let collapsedHeight: CGFloat = 90
+    private let expandedHeight: CGFloat = UIScreen.main.bounds.height - 180
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // 全屏地图
-                FullScreenMapView(
-                    plan: plan,
-                    selectedAttraction: selectedAttraction,
-                    onBack: onBack,
-                    onRefresh: onRefresh
-                )
+        ZStack {
+            // 全屏地图
+            FullScreenMapView(
+                plan: plan,
+                navigationPath: navigationPath,
+                selectedAttraction: selectedAttraction,
+                onBack: onBack,
+                onRefresh: onRefresh
+            )
+            
+            // 可展开/收起的底部面板
+            VStack(spacing: 0) {
+                Spacer()
                 
-                // 可展开/收起的底部面板
-                VStack(spacing: 0) {
-                    Spacer()
-                    
-                    CollapsibleSheet(
-                        plan: plan,
-                        isExpanded: $isExpanded,
-                        selectedAttraction: $selectedAttraction,
-                        collapsedHeight: collapsedHeight,
-                        expandedHeight: expandedHeight
-                    )
-                }
+                CollapsibleSheet(
+                    plan: plan,
+                    isExpanded: $isExpanded,
+                    selectedAttraction: $selectedAttraction,
+                    collapsedHeight: collapsedHeight,
+                    expandedHeight: expandedHeight
+                )
             }
         }
         .ignoresSafeArea(edges: .bottom)
@@ -516,6 +519,9 @@ struct RoundedCorner: Shape {
 
 struct FullScreenMapView: View {
     let plan: TravelPlan
+    /// 导航路径（用于显示实际道路路线）
+    /// 需求: 3.4, 6.3
+    var navigationPath: NavigationPath? = nil
     var selectedAttraction: Attraction? = nil
     var onBack: () -> Void
     var onRefresh: () -> Void
@@ -530,8 +536,9 @@ struct FullScreenMapView: View {
                 ),
                 attractions: plan.route.orderedAttractions,
                 route: plan.route.routePath,
-                accommodationZones: [],
-                selectedAttraction: selectedAttraction
+                accommodationZones: plan.accommodations,
+                selectedAttraction: selectedAttraction,
+                navigationPath: navigationPath
             )
             .ignoresSafeArea()
             

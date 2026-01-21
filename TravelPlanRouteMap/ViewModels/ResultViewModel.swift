@@ -8,21 +8,29 @@ class ResultViewModel: ObservableObject {
     @Published var isLoading: Bool = false
     @Published var errorMessage: String?
     
+    /// 导航路径（用于地图显示实际道路路线）
+    /// 需求: 1.4, 6.2
+    @Published var navigationPath: NavigationPath?
+    
     private let planningService: RoutePlanningService
     private let repository: TravelPlanRepository
+    private let routeNavigationService: RouteNavigationServiceProtocol
     
     init(
         planningService: RoutePlanningService = AppDependencies.shared.routePlanningService,
-        repository: TravelPlanRepository = AppDependencies.shared.repository
+        repository: TravelPlanRepository = AppDependencies.shared.repository,
+        routeNavigationService: RouteNavigationServiceProtocol = AppDependencies.shared.routeNavigationService
     ) {
         self.planningService = planningService
         self.repository = repository
+        self.routeNavigationService = routeNavigationService
     }
     
     /// 规划路线
     func planRoute(destination: String, attractions: [Attraction], travelMode: TravelMode?) async {
         isLoading = true
         errorMessage = nil
+        navigationPath = nil
         
         do {
             let plan = try await planningService.planRoute(
@@ -35,6 +43,14 @@ class ResultViewModel: ObservableObject {
             try repository.savePlan(plan)
             
             travelPlan = plan
+            
+            // 规划导航路线（获取实际道路路径）
+            // 需求: 1.4, 6.2
+            await planNavigationRoute(
+                attractions: plan.route.orderedAttractions,
+                travelMode: travelMode ?? .driving
+            )
+            
             isLoading = false
             HapticFeedback.success()
         } catch let error as TravelPlanError {
@@ -45,6 +61,27 @@ class ResultViewModel: ObservableObject {
             errorMessage = "规划失败：\(error.localizedDescription)"
             isLoading = false
             HapticFeedback.error()
+        }
+    }
+    
+    /// 规划导航路线（获取实际道路路径）
+    /// 需求: 1.4, 6.2
+    private func planNavigationRoute(attractions: [Attraction], travelMode: TravelMode) async {
+        do {
+            let navPath = try await routeNavigationService.planNavigationRoute(
+                attractions: attractions,
+                travelMode: travelMode
+            )
+            navigationPath = navPath
+            
+            // 如果有降级路线段，打印警告
+            if navPath.hasFallbackSegments {
+                print("⚠️ 导航路线包含\(navPath.fallbackSegmentCount)个降级路线段")
+            }
+        } catch {
+            // 导航路线规划失败不影响主流程，只打印警告
+            print("⚠️ 导航路线规划失败: \(error.localizedDescription)")
+            // navigationPath保持为nil，视图将使用routePath作为降级显示
         }
     }
     
@@ -59,5 +96,6 @@ class ResultViewModel: ObservableObject {
     func clear() {
         travelPlan = nil
         errorMessage = nil
+        navigationPath = nil
     }
 }
