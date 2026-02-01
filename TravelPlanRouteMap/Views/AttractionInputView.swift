@@ -3,17 +3,24 @@ import SwiftUI
 /// 景点输入视图
 struct AttractionInputView: View {
     @ObservedObject var viewModel: AttractionViewModel
-    var onNext: () -> Void
-    var onBack: () -> Void
+    var editMode: Bool = false
+    var onNext: (() -> Void)?
+    var onBack: (() -> Void)?
+    var onComplete: (([Attraction]) -> Void)?
+    
+    @State private var showCancelAlert = false
+    @Environment(\.dismiss) private var dismiss
     
     var body: some View {
         VStack(spacing: 0) {
-            // 导航栏
-            CustomNavigationBar(
-                title: "添加景点",
-                showBackButton: true,
-                onBack: onBack
-            )
+            // 导航栏（非编辑模式）
+            if !editMode {
+                CustomNavigationBar(
+                    title: "添加景点",
+                    showBackButton: true,
+                    onBack: onBack ?? {}
+                )
+            }
             
             ScrollView {
                 VStack(spacing: Spacing.lg) {
@@ -70,22 +77,28 @@ struct AttractionInputView: View {
                             }
                         }
                         .padding(.horizontal, Spacing.sm)
-                        
-                        // 错误提示
-                        if let error = viewModel.errorMessage {
-                            Text(error)
-                                .font(.caption)
-                                .foregroundColor(.red)
-                                .padding(.horizontal, Spacing.sm)
-                        }
                     }
                     .padding(.horizontal, Spacing.md)
                     
-                    // 搜索结果列表
+                    // 根据状态显示不同内容
                     if viewModel.isSearching {
-                        ProgressView()
-                            .padding()
+                        // Loading 状态 - 使用内联加载指示器
+                        LoadingIndicator(message: "搜索中...", style: .inline)
+                            .padding(.top, Spacing.md)
+                    } else if let error = viewModel.errorMessage {
+                        // 错误状态 - 使用空状态视图
+                        EmptyStateView(
+                            icon: "wifi.slash",
+                            title: "加载失败",
+                            message: error,
+                            actionTitle: "重试",
+                            onAction: {
+                                viewModel.searchAttractions()
+                            }
+                        )
+                        .padding(.top, Spacing.xl)
                     } else if !viewModel.searchResults.isEmpty {
+                        // 搜索结果列表
                         LazyVStack(spacing: Spacing.sm) {
                             ForEach(viewModel.searchResults) { result in
                                 POIResultRow(result: result) {
@@ -125,23 +138,73 @@ struct AttractionInputView: View {
             
             // 底部按钮
             VStack {
-                Button("开始规划") {
-                    if let error = viewModel.validateAndGetError() {
-                        viewModel.errorMessage = error
-                        HapticFeedback.error()
-                    } else {
-                        HapticFeedback.medium()
-                        onNext()
+                if editMode {
+                    // 编辑模式：完成按钮
+                    Button("完成") {
+                        if let error = viewModel.validateAndGetError() {
+                            viewModel.errorMessage = error
+                            HapticFeedback.error()
+                        } else {
+                            HapticFeedback.medium()
+                            onComplete?(viewModel.attractions)
+                            dismiss()
+                        }
                     }
+                    .buttonStyle(PrimaryButtonStyle())
+                    .disabled(!viewModel.canProceed())
+                    .opacity(viewModel.canProceed() ? 1 : 0.5)
+                } else {
+                    // 普通模式：开始规划按钮
+                    Button("开始规划") {
+                        if let error = viewModel.validateAndGetError() {
+                            viewModel.errorMessage = error
+                            HapticFeedback.error()
+                        } else {
+                            HapticFeedback.medium()
+                            onNext?()
+                        }
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                    .disabled(!viewModel.canProceed())
+                    .opacity(viewModel.canProceed() ? 1 : 0.5)
                 }
-                .buttonStyle(PrimaryButtonStyle())
-                .disabled(!viewModel.canProceed())
-                .opacity(viewModel.canProceed() ? 1 : 0.5)
             }
             .padding(Spacing.md)
             .background(Color.white.opacity(0.95))
         }
         .background(AppColors.background)
+        // 编辑模式：使用 NavigationView 和工具栏
+        .if(editMode) { view in
+            view
+                .navigationTitle("编辑景点")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        Button("取消") {
+                            showCancelAlert = true
+                        }
+                        .foregroundColor(AppColors.primary)
+                    }
+                }
+                .alert("放弃编辑的更改吗？", isPresented: $showCancelAlert) {
+                    Button("继续编辑", role: .cancel) { }
+                    Button("放弃", role: .destructive) {
+                        dismiss()
+                    }
+                }
+        }
+    }
+}
+
+// MARK: - View Extension for Conditional Modifiers
+extension View {
+    @ViewBuilder
+    func `if`<Content: View>(_ condition: Bool, transform: (Self) -> Content) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
     }
 }
 
@@ -182,9 +245,30 @@ struct POIResultRow: View {
 }
 
 #Preview {
-    AttractionInputView(
-        viewModel: AttractionViewModel(destination: "北京"),
-        onNext: {},
-        onBack: {}
-    )
+    NavigationView {
+        AttractionInputView(
+            viewModel: AttractionViewModel(destination: "北京"),
+            editMode: false,
+            onNext: {},
+            onBack: {}
+        )
+    }
+}
+
+#Preview("编辑模式") {
+    NavigationView {
+        AttractionInputView(
+            viewModel: AttractionViewModel(
+                destination: "北京",
+                preselectedAttractions: [
+                    Attraction(name: "故宫", coordinate: .init(latitude: 39.9163, longitude: 116.3972), address: "北京市东城区"),
+                    Attraction(name: "天安门", coordinate: .init(latitude: 39.9075, longitude: 116.3972), address: "北京市东城区")
+                ]
+            ),
+            editMode: true,
+            onComplete: { attractions in
+                print("完成编辑，景点数量：\(attractions.count)")
+            }
+        )
+    }
 }

@@ -16,6 +16,9 @@ protocol TravelPlanRepository {
     
     /// 更新旅行计划
     func updatePlan(_ plan: TravelPlan) throws
+    
+    /// 获取指定ID的旅行计划
+    func getPlan(id: String) -> TravelPlan?
 }
 
 /// 本地旅行计划仓库实现
@@ -63,8 +66,13 @@ class LocalTravelPlanRepository: TravelPlanRepository {
             let data = try encoder.encode(plans)
             userDefaults.set(data, forKey: storageKey)
         } else {
-            throw TravelPlanError.persistenceError("计划不存在")
+            throw TravelPlanError.planNotFound
         }
+    }
+    
+    /// 获取指定ID的旅行计划
+    func getPlan(id: String) -> TravelPlan? {
+        return getAllPlans().first { $0.id == id }
     }
     
     /// 删除指定计划

@@ -39,32 +39,30 @@ struct HistoryView: View {
                 Spacer()
             } else {
                 ScrollView {
-                    LazyVStack(spacing: 0) {
+                    LazyVStack(spacing: 16) {
                         ForEach(viewModel.plans) { plan in
-                            HistoryPlanCard(
-                                plan: plan,
-                                viewModel: viewModel,
+                            SwipeableCard(
                                 onDelete: {
                                     planToDelete = plan
                                     showDeleteAlert = true
+                                },
+                                onTap: {
+                                    HapticFeedback.light()
+                                    onSelectPlan(plan)
                                 }
-                            )
-                            .padding(.horizontal, 16)
-                            .padding(.vertical, 8)
-                            .onTapGesture {
-                                HapticFeedback.light()
-                                onSelectPlan(plan)
+                            ) {
+                                HistoryPlanCard(
+                                    plan: plan,
+                                    viewModel: viewModel
+                                )
                             }
-                            .contextMenu {
-                                Button(role: .destructive) {
-                                    planToDelete = plan
-                                    showDeleteAlert = true
-                                } label: {
-                                    Label("删除", systemImage: "trash")
-                                }
-                            }
+                            .accessibilityElement(children: .combine)
+                            .accessibilityLabel("\(plan.destination)旅行计划，\(plan.recommendedDays)天，\(plan.route.attractionCount)个景点")
+                            .accessibilityHint("双击查看详情，向左滑动删除")
                         }
                     }
+                    .padding(.horizontal, 16)
+                    .padding(.top, 8)
                 }
                 .background(AppColors.background)
             }
@@ -88,6 +86,18 @@ struct HistoryView: View {
                 Text("确定要删除「\(plan.destination)」的旅行计划吗？此操作无法撤销。")
             }
         }
+        .alert("删除失败", isPresented: Binding(
+            get: { viewModel.errorMessage != nil },
+            set: { if !$0 { viewModel.errorMessage = nil } }
+        )) {
+            Button("确定", role: .cancel) {
+                viewModel.errorMessage = nil
+            }
+        } message: {
+            if let errorMessage = viewModel.errorMessage {
+                Text(errorMessage)
+            }
+        }
     }
 }
 
@@ -95,7 +105,6 @@ struct HistoryView: View {
 struct HistoryPlanCard: View {
     let plan: TravelPlan
     let viewModel: HistoryViewModel
-    var onDelete: () -> Void
     
     var body: some View {
         HStack(spacing: 0) {
@@ -136,21 +145,15 @@ struct HistoryPlanCard: View {
                         .foregroundColor(.secondary)
                     
                     Spacer()
-                    
-                    // 删除按钮
-                    Button(action: onDelete) {
-                        Image(systemName: "trash")
-                            .font(.system(size: 14))
-                            .foregroundColor(Color(hex: "EF4444"))
-                    }
-                    .buttonStyle(PlainButtonStyle())
                 }
             }
             .padding(Spacing.md)
         }
-        .background(Color.white)
-        .cornerRadius(12)
-        .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        .background(
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.white)
+                .shadow(color: Color.black.opacity(0.05), radius: 8, x: 0, y: 2)
+        )
     }
 }
 

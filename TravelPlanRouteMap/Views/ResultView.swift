@@ -16,7 +16,10 @@ struct ResultView: View {
             Color.white.ignoresSafeArea()
             
             if viewModel.isLoading {
-                LoadingOverlay(message: "AI 正在规划最优路线...")
+                LoadingIndicator(
+                    message: "正在规划路线...",
+                    style: .fullScreen
+                )
             } else if let error = viewModel.errorMessage {
                 ErrorOverlay(message: error) {
                     viewModel.retry(
@@ -30,6 +33,7 @@ struct ResultView: View {
                 // 主内容
                 TravelPlanContentView(
                     plan: plan,
+                    citycode: citycode,  // 新增：传递城市代码
                     navigationPath: viewModel.navigationPath,
                     isSaved: viewModel.isSaved,  // 新增：传递保存状态
                     onBack: onBack,
@@ -42,6 +46,23 @@ struct ResultView: View {
                                 travelMode: travelMode
                             )
                         }
+                    },
+                    onReplan: {
+                        await viewModel.replanRoute(
+                            destination: destination,
+                            citycode: citycode,
+                            attractions: plan.route.orderedAttractions,
+                            travelMode: travelMode
+                        )
+                    },
+                    onUpdateRoute: { planId, dest, code, attrs, mode in
+                        await viewModel.updateRoute(
+                            planId: planId,
+                            destination: dest,
+                            citycode: code,
+                            attractions: attrs,
+                            travelMode: mode
+                        )
                     }
                 )
             }
@@ -65,12 +86,15 @@ struct ResultView: View {
 
 struct TravelPlanContentView: View {
     let plan: TravelPlan
+    let citycode: String?  // 新增：城市代码参数
     /// 导航路径（用于显示实际道路路线）
     /// 需求: 3.4, 6.3
     var navigationPath: NavigationPath? = nil
     var isSaved: Bool = false  // 新增：保存状态
     var onBack: () -> Void
     var onRefresh: () -> Void
+    var onReplan: () async -> Void  // 新增：重新规划回调
+    var onUpdateRoute: ((String, String, String?, [Attraction], TravelMode?) async -> Void)? = nil  // 新增：更新路线回调
     
     // 面板展开/收起状态
     @State private var isExpanded: Bool = true
@@ -78,6 +102,10 @@ struct TravelPlanContentView: View {
     @State private var selectedAttraction: Attraction? = nil
     // 选中的住宿区域（用于地图聚焦）
     @State private var selectedAccommodationZone: AccommodationZone? = nil
+    // 新增：编辑视图显示状态
+    @State private var showEditView = false
+    // 新增：编辑用的 ViewModel
+    @State private var editViewModel: AttractionViewModel?
     
     // 面板高度 - 使用固定值避免 GeometryReader
     private let collapsedHeight: CGFloat = 90
@@ -93,7 +121,16 @@ struct TravelPlanContentView: View {
                 selectedAccommodationZone: selectedAccommodationZone,
                 isSaved: isSaved,  // 新增：传递保存状态
                 onBack: onBack,
-                onRefresh: onRefresh
+                onRefresh: onRefresh,
+                onEdit: onUpdateRoute != nil ? {
+                    // 创建编辑用的 ViewModel
+                    editViewModel = AttractionViewModel(
+                        destination: plan.destination,
+                        preselectedAttractions: plan.route.orderedAttractions
+                    )
+                    showEditView = true
+                } : nil,  // 新增：传递编辑回调
+                onReplan: onReplan  // 新增：传递重新规划回调
             )
             
             // 可展开/收起的底部面板
@@ -111,6 +148,32 @@ struct TravelPlanContentView: View {
             }
         }
         .ignoresSafeArea(edges: .bottom)
+        .sheet(isPresented: $showEditView) {
+            // 编辑景点视图
+            if let viewModel = editViewModel {
+                NavigationView {
+                    AttractionInputView(
+                        viewModel: viewModel,
+                        editMode: true,
+                        onComplete: { updatedAttractions in
+                            // 完成编辑，更新路线
+                            if let onUpdateRoute = onUpdateRoute {
+                                Task {
+                                    await onUpdateRoute(
+                                        plan.id,
+                                        plan.destination,
+                                        citycode,
+                                        updatedAttractions,
+                                        plan.travelMode
+                                    )
+                                    showEditView = false
+                                }
+                            }
+                        }
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -566,6 +629,13 @@ struct FullScreenMapView: View {
     var isSaved: Bool = false  // 新增：保存状态
     var onBack: () -> Void
     var onRefresh: () -> Void
+    var onEdit: (() -> Void)? = nil  // 新增：编辑回调
+    var onReplan: (() async -> Void)? = nil  // 新增：重新规划回调
+    
+    // 重新规划状态
+    @State private var isReplanning = false
+    @State private var showReplanError = false
+    @State private var replanErrorMessage: String?
     
     var body: some View {
         ZStack(alignment: .top) {
@@ -583,6 +653,27 @@ struct FullScreenMapView: View {
                 navigationPath: navigationPath
             )
             .ignoresSafeArea()
+            
+            // Loading 遮罩层（重新规划时显示）
+            if isReplanning {
+                ZStack {
+                    Color.black.opacity(0.3)
+                        .ignoresSafeArea()
+                    
+                    VStack(spacing: 16) {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                            .tint(.white)
+                        
+                        Text("正在重新规划路线...")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                    .padding(24)
+                    .background(Color.black.opacity(0.7))
+                    .cornerRadius(16)
+                }
+            }
             
             // 浮动导航栏
             HStack {
@@ -619,19 +710,65 @@ struct FullScreenMapView: View {
                     .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
                 }
                 
-                Button(action: onRefresh) {
-                    Image(systemName: "arrow.clockwise")
-                        .font(.system(size: 15, weight: .medium))
-                        .foregroundColor(Color(hex: "374151"))
-                        .frame(width: 36, height: 36)
-                        .background(Color.white)
-                        .cornerRadius(18)
-                        .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                // 新增：编辑按钮
+                if let onEdit = onEdit {
+                    Button(action: onEdit) {
+                        Image(systemName: "pencil")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color(hex: "374151"))
+                            .frame(width: 36, height: 36)
+                            .background(Color.white)
+                            .cornerRadius(18)
+                            .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                    }
+                    .accessibilityLabel("编辑景点")
+                    .accessibilityHint("打开景点编辑页面")
+                }
+                
+                // 新增：重新规划按钮
+                if onReplan != nil {
+                    Button(action: {
+                        Task {
+                            await handleReplan()
+                        }
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.system(size: 15, weight: .medium))
+                            .foregroundColor(Color(hex: "374151"))
+                            .frame(width: 36, height: 36)
+                            .background(Color.white)
+                            .cornerRadius(18)
+                            .shadow(color: Color.black.opacity(0.1), radius: 8, x: 0, y: 2)
+                    }
+                    .disabled(isReplanning)
+                    .accessibilityLabel("重新规划路线")
+                    .accessibilityHint("使用当前景点重新生成路线")
                 }
             }
             .padding(.horizontal, 16)
             .padding(.top, 54)
         }
+        .alert("重新规划失败", isPresented: $showReplanError) {
+            Button("确定", role: .cancel) { }
+            Button("重试") {
+                Task {
+                    await handleReplan()
+                }
+            }
+        } message: {
+            Text(replanErrorMessage ?? "未知错误")
+        }
+    }
+    
+    // MARK: - 重新规划处理方法
+    
+    /// 处理重新规划操作
+    private func handleReplan() async {
+        guard let onReplan = onReplan else { return }
+        
+        isReplanning = true
+        await onReplan()
+        isReplanning = false
     }
 }
 
@@ -823,28 +960,6 @@ struct SheetHeader: View {
             Spacer()
         }
         .padding(.top, 8)
-    }
-}
-
-// MARK: - 加载覆盖层
-
-struct LoadingOverlay: View {
-    let message: String
-    
-    var body: some View {
-        ZStack {
-            Color.white.ignoresSafeArea()
-            
-            VStack(spacing: 20) {
-                ProgressView()
-                    .scaleEffect(1.3)
-                    .tint(Color(hex: "3B82F6"))
-                
-                Text(message)
-                    .font(.system(size: 15, weight: .medium))
-                    .foregroundColor(Color(hex: "6B7280"))
-            }
-        }
     }
 }
 

@@ -19,9 +19,23 @@ class AttractionViewModel: ObservableObject {
     let maxAttractions = Config.maxAttractions
     let minAttractions = Config.minAttractions
     
-    init(geocodingService: GeocodingService = AppDependencies.shared.geocodingService, destination: String) {
+    /// 初始化方法
+    /// - Parameters:
+    ///   - geocodingService: 地理编码服务
+    ///   - destination: 目的地名称
+    ///   - preselectedAttractions: 预选的景点列表（用于编辑模式）
+    init(
+        geocodingService: GeocodingService = AppDependencies.shared.geocodingService,
+        destination: String,
+        preselectedAttractions: [Attraction] = []
+    ) {
         self.geocodingService = geocodingService
         self.destination = destination
+        
+        // 如果提供了预选景点，则设置到 attractions 中（编辑模式）
+        if !preselectedAttractions.isEmpty {
+            self.attractions = preselectedAttractions
+        }
     }
     
     /// 模糊搜索景点（使用高德POI搜索，带防抖）

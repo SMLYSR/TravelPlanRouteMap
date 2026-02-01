@@ -54,22 +54,38 @@ struct DestinationInputView: View {
                                 viewModel.searchDestination()
                             }
                         }
-                        
-                        // 错误提示
-                        if let error = viewModel.errorMessage {
-                            Text(error)
-                                .font(.caption)
-                                .foregroundColor(.red)
-                                .padding(.horizontal, Spacing.sm)
-                        }
                     }
                     .padding(.horizontal, Spacing.md)
                     
-                    // 搜索结果列表
+                    // 根据状态显示不同内容
                     if viewModel.isSearching {
-                        ProgressView()
-                            .padding()
+                        // Loading 状态 - 使用内联加载指示器
+                        LoadingIndicator(message: "搜索中...", style: .inline)
+                            .padding(.top, Spacing.md)
+                    } else if let error = viewModel.errorMessage {
+                        // 错误状态 - 使用空状态视图
+                        EmptyStateView(
+                            icon: "wifi.slash",
+                            title: "加载失败",
+                            message: error,
+                            actionTitle: "重试",
+                            onAction: {
+                                viewModel.searchDestination()
+                            }
+                        )
+                        .padding(.top, Spacing.xl)
+                    } else if viewModel.searchResults.isEmpty && !viewModel.destination.trimmingCharacters(in: .whitespaces).isEmpty {
+                        // 无结果状态 - 使用空状态视图
+                        EmptyStateView(
+                            icon: "magnifyingglass",
+                            title: "未找到结果",
+                            message: "请尝试其他关键词",
+                            actionTitle: nil,
+                            onAction: nil
+                        )
+                        .padding(.top, Spacing.xl)
                     } else if !viewModel.searchResults.isEmpty {
+                        // 搜索结果列表
                         VStack(spacing: Spacing.sm) {
                             ForEach(viewModel.searchResults) { result in
                                 SearchResultRow(result: result) {

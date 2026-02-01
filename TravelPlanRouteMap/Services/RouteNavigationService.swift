@@ -766,7 +766,8 @@ extension RouteNavigationService: AMapSearchDelegate {
         print("   错误码: \(nsError.code)")
         print("   错误域: \(nsError.domain)")
         print("   错误描述: \(nsError.localizedDescription)")
-        if let userInfo = nsError.userInfo as? [String: Any], !userInfo.isEmpty {
+        let userInfo = nsError.userInfo
+        if !userInfo.isEmpty {
             print("   详细信息: \(userInfo)")
         }
         

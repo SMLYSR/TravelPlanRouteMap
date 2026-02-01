@@ -13,6 +13,12 @@ enum TravelPlanError: Error, LocalizedError {
     case mapLoadingFailed
     case persistenceError(String)
     
+    // 新增错误类型（任务 1.4）
+    case aiServiceError
+    case amapServiceError(code: Int, message: String)
+    case planNotFound
+    case invalidData
+    
     var errorDescription: String? {
         switch self {
         case .invalidDestination:
@@ -35,6 +41,14 @@ enum TravelPlanError: Error, LocalizedError {
             return "地图加载失败，请稍后重试"
         case .persistenceError(let reason):
             return "数据保存失败：\(reason)"
+        case .aiServiceError:
+            return "AI服务暂时不可用，请稍后重试"
+        case .amapServiceError(let code, let message):
+            return "地图服务错误 (\(code)): \(message)"
+        case .planNotFound:
+            return "未找到指定的旅行计划"
+        case .invalidData:
+            return "数据格式错误"
         }
     }
 }

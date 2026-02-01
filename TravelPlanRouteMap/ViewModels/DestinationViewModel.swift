@@ -48,14 +48,17 @@ class DestinationViewModel: ObservableObject {
                 }
             } catch {
                 if !Task.isCancelled {
-                    // 优化错误提示
-                    let errorMsg = error.localizedDescription
-                    if errorMsg.contains("EXCEEDED_THE_LIMIT") || errorMsg.contains("QPS") {
-                        errorMessage = "搜索太频繁，请稍后再试"
-                    } else {
-                        errorMessage = "搜索失败：\(errorMsg)"
-                    }
+                    // 记录详细错误信息
+                    AMapErrorHandler.logError(error, context: "搜索目的地: \(keyword)")
+                    
+                    // 设置用户友好的错误提示
+                    errorMessage = AMapErrorHandler.getUserMessage(from: error)
+                    
+                    // 清空结果列表
                     searchResults = []
+                    
+                    // 触觉反馈
+                    HapticFeedback.error()
                 }
             }
             
