@@ -5,13 +5,15 @@ struct DestinationInputView: View {
     @StateObject private var viewModel = DestinationViewModel()
     @Binding var selectedDestination: GeocodingResult?
     var onNext: () -> Void
+    var onBack: () -> Void  // 新增：返回回调
     
     var body: some View {
         VStack(spacing: 0) {
             // 导航栏
             CustomNavigationBar(
                 title: "选择目的地",
-                showBackButton: false
+                showBackButton: true,  // 改为 true
+                onBack: onBack  // 使用新增的回调
             )
             
             ScrollView {
@@ -177,7 +179,13 @@ struct SearchResultRow: View {
 }
 
 #Preview {
-    DestinationInputView(selectedDestination: .constant(nil)) {
-        print("Next")
-    }
+    DestinationInputView(
+        selectedDestination: .constant(nil),
+        onNext: {
+            print("Next")
+        },
+        onBack: {
+            print("Back")
+        }
+    )
 }

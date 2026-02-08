@@ -78,7 +78,8 @@ extension AMapGeocodingService: AMapSearchDelegate {
                     latitude: Double(location.latitude),
                     longitude: Double(location.longitude)
                 ),
-                city: geocode.city ?? ""
+                city: geocode.city ?? "",
+                citycode: geocode.citycode  // 保存城市代码
             )
         }
         
@@ -105,7 +106,8 @@ extension AMapGeocodingService: AMapSearchDelegate {
                     latitude: Double(location.latitude),
                     longitude: Double(location.longitude)
                 ),
-                type: poi.type ?? ""
+                type: poi.type ?? "",
+                citycode: poi.citycode  // 保存城市代码
             )
         }
         

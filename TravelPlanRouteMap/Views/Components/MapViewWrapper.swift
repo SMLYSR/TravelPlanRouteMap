@@ -13,6 +13,13 @@ struct MapViewWrapper: UIViewRepresentable {
     let route: [Coordinate]
     let accommodationZones: [AccommodationZone]
     var selectedAttraction: Attraction? = nil  // 选中的景点
+    var selectedAccommodationZone: AccommodationZone? = nil  // 选中的住宿区域
+    
+    /// 导航路径（可选）- 优先使用此属性绘制路线
+    /// 当navigationPath不为nil时，使用其allCoordinates绘制实际道路路线
+    /// 当为nil时，回退到route参数绘制简单直线
+    /// 需求: 3.1, 3.2, 3.3
+    var navigationPath: NavigationPath? = nil
     
     // MARK: - UIViewRepresentable
     
@@ -28,6 +35,10 @@ struct MapViewWrapper: UIViewRepresentable {
         mapView.isRotateEnabled = false
         mapView.isRotateCameraEnabled = false
         
+        // 性能优化配置
+        mapView.isShowTraffic = false  // 关闭实时路况
+        mapView.isShowsLabels = true
+        
         // 设置初始区域
         mapView.centerCoordinate = CLLocationCoordinate2D(
             latitude: region.center.latitude,
@@ -35,67 +46,91 @@ struct MapViewWrapper: UIViewRepresentable {
         )
         mapView.zoomLevel = 12
         
+        // 初始化时添加标注和覆盖物
+        context.coordinator.updateMapContent(
+            mapView: mapView,
+            attractions: attractions,
+            route: route,
+            accommodationZones: accommodationZones,
+            navigationPath: navigationPath
+        )
+        
         return mapView
     }
     
     func updateUIView(_ mapView: MAMapView, context: Context) {
-        // 如果有选中的景点，聚焦到该景点
-        if let selected = selectedAttraction, let coordinate = selected.coordinate {
-            let center = CLLocationCoordinate2D(
-                latitude: coordinate.latitude,
-                longitude: coordinate.longitude
-            )
-            mapView.setCenter(center, animated: true)
-            mapView.setZoomLevel(15, animated: true)
-            return
-        }
-        
-        // 清除现有标注
-        if let annotations = mapView.annotations {
-            mapView.removeAnnotations(annotations)
-        }
-        if let overlays = mapView.overlays {
-            mapView.removeOverlays(overlays)
-        }
-        
-        // 添加景点标记
-        for (index, attraction) in attractions.enumerated() {
-            guard let coordinate = attraction.coordinate else { continue }
-            
-            let annotation = MAPointAnnotation()
-            annotation.coordinate = CLLocationCoordinate2D(
-                latitude: coordinate.latitude,
-                longitude: coordinate.longitude
-            )
-            annotation.title = "\(index + 1). \(attraction.name)"
-            annotation.subtitle = attraction.address
-            mapView.addAnnotation(annotation)
-        }
-        
-        // 绘制路线
-        if route.count >= 2 {
-            var coordinates = route.map { coord in
-                CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
+        // 优先处理住宿区域选中
+        if let selectedZone = selectedAccommodationZone {
+            // 检查是否需要更新选中状态
+            if context.coordinator.lastSelectedAccommodationZoneId != selectedZone.id {
+                context.coordinator.lastSelectedAccommodationZoneId = selectedZone.id
+                context.coordinator.lastSelectedAttractionId = nil  // 清除景点选中
+                
+                let center = CLLocationCoordinate2D(
+                    latitude: selectedZone.center.latitude,
+                    longitude: selectedZone.center.longitude
+                )
+                mapView.setCenter(center, animated: true)
+                
+                // 根据半径计算合适的缩放级别
+                let zoomLevel = calculateZoomLevel(for: selectedZone.radius)
+                mapView.setZoomLevel(zoomLevel, animated: true)
             }
-            let polyline = MAPolyline(coordinates: &coordinates, count: UInt(coordinates.count))
-            mapView.add(polyline)
+            return
+        } else {
+            context.coordinator.lastSelectedAccommodationZoneId = nil
         }
         
-        // 添加住宿区域
-        for zone in accommodationZones {
-            let circle = MACircle(
-                center: CLLocationCoordinate2D(
-                    latitude: zone.center.latitude,
-                    longitude: zone.center.longitude
-                ),
-                radius: zone.radius
+        // 处理景点选中
+        if let selected = selectedAttraction, let coordinate = selected.coordinate {
+            // 检查是否需要更新选中状态
+            if context.coordinator.lastSelectedAttractionId != selected.id {
+                context.coordinator.lastSelectedAttractionId = selected.id
+                let center = CLLocationCoordinate2D(
+                    latitude: coordinate.latitude,
+                    longitude: coordinate.longitude
+                )
+                mapView.setCenter(center, animated: true)
+                mapView.setZoomLevel(15, animated: true)
+            }
+            return
+        } else {
+            context.coordinator.lastSelectedAttractionId = nil
+        }
+        
+        // 检查数据是否真的变化了
+        let needsUpdate = context.coordinator.needsUpdate(
+            attractions: attractions,
+            route: route,
+            accommodationZones: accommodationZones,
+            navigationPath: navigationPath
+        )
+        
+        if needsUpdate {
+            context.coordinator.updateMapContent(
+                mapView: mapView,
+                attractions: attractions,
+                route: route,
+                accommodationZones: accommodationZones,
+                navigationPath: navigationPath
             )
-            mapView.add(circle)
         }
-        
-        // 调整视野
-        if let annotations = mapView.annotations, !annotations.isEmpty {
-            mapView.showAnnotations(annotations, animated: true)
+    }
+    
+    /// 根据半径计算合适的缩放级别
+    private func calculateZoomLevel(for radius: Double) -> CGFloat {
+        // 半径越大，缩放级别越小（显示范围越大）
+        // 半径单位：米
+        if radius > 5000 {
+            return 11
+        } else if radius > 3000 {
+            return 12
+        } else if radius > 2000 {
+            return 13
+        } else if radius > 1000 {
+            return 14
+        } else {
+            return 15
         }
     }
     
@@ -107,7 +142,107 @@ struct MapViewWrapper: UIViewRepresentable {
     
     class Coordinator: NSObject, MAMapViewDelegate {
         
-        /// 自定义标注视图
+        // 缓存上次的数据，避免重复更新
+        private var lastAttractionsCount: Int = 0
+        private var lastRouteCount: Int = 0
+        private var lastAccommodationZonesCount: Int = 0
+        private var lastNavigationPathCount: Int = 0
+        var lastSelectedAttractionId: String? = nil
+        var lastSelectedAccommodationZoneId: String? = nil
+        
+        // 缓存标注视图，避免重复创建
+        private var annotationImageCache: [String: UIImage] = [:]
+        
+        /// 检查是否需要更新地图内容
+        func needsUpdate(
+            attractions: [Attraction],
+            route: [Coordinate],
+            accommodationZones: [AccommodationZone],
+            navigationPath: NavigationPath?
+        ) -> Bool {
+            let attractionsChanged = attractions.count != lastAttractionsCount
+            let routeChanged = route.count != lastRouteCount
+            let zonesChanged = accommodationZones.count != lastAccommodationZonesCount
+            let navPathChanged = (navigationPath?.allCoordinates.count ?? 0) != lastNavigationPathCount
+            
+            return attractionsChanged || routeChanged || zonesChanged || navPathChanged
+        }
+        
+        /// 更新地图内容（标注、路线、区域）
+        func updateMapContent(
+            mapView: MAMapView,
+            attractions: [Attraction],
+            route: [Coordinate],
+            accommodationZones: [AccommodationZone],
+            navigationPath: NavigationPath?
+        ) {
+            // 清除现有标注和覆盖物
+            if let annotations = mapView.annotations {
+                mapView.removeAnnotations(annotations)
+            }
+            if let overlays = mapView.overlays {
+                mapView.removeOverlays(overlays)
+            }
+            
+            // 添加景点标记
+            for (index, attraction) in attractions.enumerated() {
+                guard let coordinate = attraction.coordinate else { continue }
+                
+                let annotation = MAPointAnnotation()
+                annotation.coordinate = CLLocationCoordinate2D(
+                    latitude: coordinate.latitude,
+                    longitude: coordinate.longitude
+                )
+                annotation.title = "\(index + 1). \(attraction.name)"
+                annotation.subtitle = attraction.address
+                mapView.addAnnotation(annotation)
+            }
+            
+            // 绘制路线 - 优先使用navigationPath
+            if let navPath = navigationPath {
+                let coordinates = navPath.allCoordinates
+                if coordinates.count >= 2 {
+                    var clCoordinates = coordinates.map { coord in
+                        CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
+                    }
+                    let polyline = MAPolyline(coordinates: &clCoordinates, count: UInt(clCoordinates.count))
+                    mapView.add(polyline)
+                }
+            } else if route.count >= 2 {
+                var coordinates = route.map { coord in
+                    CLLocationCoordinate2D(latitude: coord.latitude, longitude: coord.longitude)
+                }
+                let polyline = MAPolyline(coordinates: &coordinates, count: UInt(coordinates.count))
+                mapView.add(polyline)
+            }
+            
+            // 添加住宿区域
+            for zone in accommodationZones {
+                let circle = MACircle(
+                    center: CLLocationCoordinate2D(
+                        latitude: zone.center.latitude,
+                        longitude: zone.center.longitude
+                    ),
+                    radius: zone.radius
+                )
+                mapView.add(circle)
+            }
+            
+            // 调整视野（只在初始化时执行）
+            if lastAttractionsCount == 0 && !attractions.isEmpty {
+                if let annotations = mapView.annotations, !annotations.isEmpty {
+                    mapView.showAnnotations(annotations, animated: false)
+                }
+            }
+            
+            // 更新缓存
+            lastAttractionsCount = attractions.count
+            lastRouteCount = route.count
+            lastAccommodationZonesCount = accommodationZones.count
+            lastNavigationPathCount = navigationPath?.allCoordinates.count ?? 0
+        }
+        
+        /// 自定义标注视图（带缓存优化）
         func mapView(_ mapView: MAMapView!, viewFor annotation: MAAnnotation!) -> MAAnnotationView! {
             guard annotation is MAPointAnnotation else { return nil }
             
@@ -117,17 +252,27 @@ struct MapViewWrapper: UIViewRepresentable {
             if annotationView == nil {
                 annotationView = MAAnnotationView(annotation: annotation, reuseIdentifier: identifier)
                 annotationView?.canShowCallout = true
+                annotationView?.centerOffset = CGPoint(x: 0, y: -20)
+            } else {
+                annotationView?.annotation = annotation
             }
             
-            // 创建自定义标记
-            let customView = createCustomAnnotationView(for: annotation)
-            annotationView?.image = customView.asImage()
-            annotationView?.centerOffset = CGPoint(x: 0, y: -20)
+            // 使用缓存的图片或创建新图片
+            if let title = annotation.title, let cacheKey = title {
+                if let cachedImage = annotationImageCache[cacheKey] {
+                    annotationView?.image = cachedImage
+                } else {
+                    let customView = createCustomAnnotationView(for: annotation)
+                    let image = customView.asImage()
+                    annotationImageCache[cacheKey] = image
+                    annotationView?.image = image
+                }
+            }
             
             return annotationView
         }
         
-        /// 自定义覆盖物渲染
+        /// 自定义覆盖物渲染（优化渲染性能）
         func mapView(_ mapView: MAMapView!, rendererFor overlay: MAOverlay!) -> MAOverlayRenderer! {
             if let polyline = overlay as? MAPolyline {
                 let renderer = MAPolylineRenderer(polyline: polyline)
@@ -135,6 +280,8 @@ struct MapViewWrapper: UIViewRepresentable {
                 renderer?.strokeColor = UIColor(hex: "06B6D4")
                 renderer?.lineJoinType = kMALineJoinRound
                 renderer?.lineCapType = kMALineCapRound
+                // 性能优化：减少抗锯齿
+                renderer?.lineDashType = kMALineDashTypeNone
                 return renderer
             }
             

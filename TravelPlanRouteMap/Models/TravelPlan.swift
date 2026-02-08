@@ -10,6 +10,7 @@ struct TravelPlan: Codable, Identifiable, Equatable {
     let totalDistance: Double // 单位：公里
     let createdAt: Date
     let travelMode: TravelMode?
+    let navigationPath: NavigationPath?  // 新增：实际导航路径（包含道路路线）
     
     init(
         id: String = UUID().uuidString,
@@ -19,7 +20,8 @@ struct TravelPlan: Codable, Identifiable, Equatable {
         accommodations: [AccommodationZone],
         totalDistance: Double,
         createdAt: Date = Date(),
-        travelMode: TravelMode? = nil
+        travelMode: TravelMode? = nil,
+        navigationPath: NavigationPath? = nil
     ) {
         self.id = id
         self.destination = destination
@@ -29,5 +31,6 @@ struct TravelPlan: Codable, Identifiable, Equatable {
         self.totalDistance = totalDistance
         self.createdAt = createdAt
         self.travelMode = travelMode
+        self.navigationPath = navigationPath
     }
 }

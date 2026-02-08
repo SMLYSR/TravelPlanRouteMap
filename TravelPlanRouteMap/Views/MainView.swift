@@ -26,46 +26,66 @@ struct MainView: View {
             case .home:
                 HistoryView(
                     onSelectPlan: { plan in
-                        navigationState = .planDetail(plan)
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .planDetail(plan)
+                        }
                     },
                     onNewPlan: {
-                        startNewPlan()
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            startNewPlan()
+                        }
                     }
                 )
                 .transition(.opacity)
+                .zIndex(navigationState.zIndex == 0 ? 1 : 0)
                 
             case .destination:
                 DestinationInputView(
                     selectedDestination: $selectedDestination,
                     onNext: {
-                        navigationState = .travelMode
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .travelMode
+                        }
+                    },
+                    onBack: {  // 新增：返回首页
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .home
+                        }
                     }
                 )
                 .transition(.asymmetric(
                     insertion: .move(edge: .trailing),
                     removal: .move(edge: .leading)
                 ))
+                .zIndex(navigationState.zIndex == 1 ? 1 : 0)
                 
             case .travelMode:
                 TravelModeSelectionView(
                     selectedMode: $selectedTravelMode,
                     onNext: {
                         initAttractionViewModel()
-                        navigationState = .attractions
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .attractions
+                        }
                     },
                     onSkip: {
                         selectedTravelMode = .driving
                         initAttractionViewModel()
-                        navigationState = .attractions
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .attractions
+                        }
                     },
                     onBack: {
-                        navigationState = .destination
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .destination
+                        }
                     }
                 )
                 .transition(.asymmetric(
                     insertion: .move(edge: .trailing),
                     removal: .move(edge: .leading)
                 ))
+                .zIndex(navigationState.zIndex == 2 ? 1 : 0)
                 
             case .attractions:
                 if let vm = attractionViewModel {
@@ -73,16 +93,21 @@ struct MainView: View {
                         viewModel: vm,
                         onNext: {
                             resultViewModel.clear()
-                            navigationState = .result
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                navigationState = .result
+                            }
                         },
                         onBack: {
-                            navigationState = .travelMode
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                navigationState = .travelMode
+                            }
                         }
                     )
                     .transition(.asymmetric(
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
                     ))
+                    .zIndex(navigationState.zIndex == 3 ? 1 : 0)
                 }
                 
             case .result:
@@ -90,13 +115,20 @@ struct MainView: View {
                     ResultView(
                         viewModel: resultViewModel,
                         destination: dest.name,
+                        citycode: dest.citycode,  // 传递citycode
                         attractions: vm.attractions,
                         travelMode: selectedTravelMode,
-                        onBack: {
-                            navigationState = .attractions
+                        onBack: {  // 修改：返回首页并刷新列表
+                            historyViewModel.loadPlans()
+                            
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                navigationState = .home
+                            }
                         },
                         onNewPlan: {
-                            startNewPlan()
+                            withAnimation(.easeInOut(duration: 0.25)) {
+                                startNewPlan()
+                            }
                         }
                     )
                     .onAppear {
@@ -106,16 +138,21 @@ struct MainView: View {
                         insertion: .move(edge: .trailing),
                         removal: .move(edge: .leading)
                     ))
+                    .zIndex(navigationState.zIndex == 4 ? 1 : 0)
                 }
                 
             case .planDetail(let plan):
                 PlanDetailView(
                     plan: plan,
                     onBack: {
-                        navigationState = .home
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            navigationState = .home
+                        }
                     },
                     onNewPlan: {
-                        startNewPlan()
+                        withAnimation(.easeInOut(duration: 0.25)) {
+                            startNewPlan()
+                        }
                     },
                     onDelete: {
                         deletePlanAndGoBack(plan)
@@ -125,9 +162,9 @@ struct MainView: View {
                     insertion: .move(edge: .trailing),
                     removal: .move(edge: .leading)
                 ))
+                .zIndex(navigationState.zIndex == 5 ? 1 : 0)
             }
         }
-        .animation(.easeInOut(duration: AnimationDuration.pageTransitionIn), value: navigationState.description)
     }
     
     private func startNewPlan() {
@@ -151,7 +188,7 @@ struct MainView: View {
     }
 }
 
-// 为 NavigationState 添加 description 以支持动画
+// 为 NavigationState 添加 description 和 zIndex 以支持动画
 extension NavigationState {
     var description: String {
         switch self {
@@ -161,6 +198,17 @@ extension NavigationState {
         case .attractions: return "attractions"
         case .result: return "result"
         case .planDetail: return "planDetail"
+        }
+    }
+    
+    var zIndex: Int {
+        switch self {
+        case .home: return 0
+        case .destination: return 1
+        case .travelMode: return 2
+        case .attractions: return 3
+        case .result: return 4
+        case .planDetail: return 5
         }
     }
 }

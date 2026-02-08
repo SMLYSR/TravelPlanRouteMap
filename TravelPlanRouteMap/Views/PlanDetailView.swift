@@ -44,35 +44,37 @@ struct DetailContentView: View {
     @State private var isExpanded: Bool = true
     // 选中的景点（用于地图聚焦）
     @State private var selectedAttraction: Attraction? = nil
+    // 选中的住宿区域（用于地图聚焦）
+    @State private var selectedAccommodationZone: AccommodationZone? = nil
     
-    // 面板高度
+    // 面板高度 - 使用固定值避免 GeometryReader
     private let collapsedHeight: CGFloat = 90
-    private var expandedHeight: CGFloat { UIScreen.main.bounds.height - 180 }
+    private let expandedHeight: CGFloat = UIScreen.main.bounds.height - 180
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // 全屏地图
-                DetailFullScreenMapView(
-                    plan: plan,
-                    selectedAttraction: selectedAttraction,
-                    onBack: onBack,
-                    onNewPlan: onNewPlan,
-                    onDelete: onDelete
-                )
+        ZStack {
+            // 全屏地图
+            DetailFullScreenMapView(
+                plan: plan,
+                selectedAttraction: selectedAttraction,
+                selectedAccommodationZone: selectedAccommodationZone,
+                onBack: onBack,
+                onNewPlan: onNewPlan,
+                onDelete: onDelete
+            )
+            
+            // 可展开/收起的底部面板
+            VStack(spacing: 0) {
+                Spacer()
                 
-                // 可展开/收起的底部面板
-                VStack(spacing: 0) {
-                    Spacer()
-                    
-                    DetailCollapsibleSheet(
-                        plan: plan,
-                        isExpanded: $isExpanded,
-                        selectedAttraction: $selectedAttraction,
-                        collapsedHeight: collapsedHeight,
-                        expandedHeight: expandedHeight
-                    )
-                }
+                DetailCollapsibleSheet(
+                    plan: plan,
+                    isExpanded: $isExpanded,
+                    selectedAttraction: $selectedAttraction,
+                    selectedAccommodationZone: $selectedAccommodationZone,
+                    collapsedHeight: collapsedHeight,
+                    expandedHeight: expandedHeight
+                )
             }
         }
         .ignoresSafeArea(edges: .bottom)
@@ -84,6 +86,7 @@ struct DetailContentView: View {
 struct DetailFullScreenMapView: View {
     let plan: TravelPlan
     var selectedAttraction: Attraction? = nil
+    var selectedAccommodationZone: AccommodationZone? = nil
     var onBack: () -> Void
     var onNewPlan: () -> Void
     var onDelete: (() -> Void)?
@@ -97,9 +100,10 @@ struct DetailFullScreenMapView: View {
                     span: MapSpan(latitudeDelta: 0.8, longitudeDelta: 0.8)
                 ),
                 attractions: plan.route.orderedAttractions,
-                route: plan.route.routePath,
-                accommodationZones: [],
-                selectedAttraction: selectedAttraction
+                route: plan.navigationPath?.allCoordinates ?? plan.route.routePath,  // 优先使用导航路径，否则使用直线路径
+                accommodationZones: plan.accommodations,
+                selectedAttraction: selectedAttraction,
+                selectedAccommodationZone: selectedAccommodationZone
             )
             .ignoresSafeArea()
             
@@ -160,6 +164,7 @@ struct DetailCollapsibleSheet: View {
     let plan: TravelPlan
     @Binding var isExpanded: Bool
     @Binding var selectedAttraction: Attraction?
+    @Binding var selectedAccommodationZone: AccommodationZone?
     let collapsedHeight: CGFloat
     let expandedHeight: CGFloat
     
@@ -177,11 +182,21 @@ struct DetailCollapsibleSheet: View {
                         
                         // 住宿推荐
                         if !plan.accommodations.isEmpty {
-                            AccommodationCard(zone: plan.accommodations.first!)
+                            AccommodationCard(zone: plan.accommodations.first!) {
+                                // 点击住宿卡片时聚焦到该区域
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                    selectedAccommodationZone = plan.accommodations.first
+                                    selectedAttraction = nil  // 取消景点选中
+                                }
+                            }
                         }
                         
                         // 时间轴行程
-                        TimelineView(plan: plan, selectedAttraction: $selectedAttraction)
+                        TimelineView(
+                            plan: plan,
+                            selectedAttraction: $selectedAttraction,
+                            selectedAccommodationZone: $selectedAccommodationZone
+                        )
                         
                         // 创建时间
                         HStack {

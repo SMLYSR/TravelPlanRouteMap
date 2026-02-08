@@ -12,6 +12,7 @@ class AppDependencies {
     private var _geocodingService: GeocodingService?
     private var _routePlanningService: RoutePlanningService?
     private var _mapService: MapService?
+    private var _routeNavigationService: RouteNavigationServiceProtocol?
     
     var aiAgent: AIAgent {
         if _aiAgent == nil {
@@ -52,6 +53,15 @@ class AppDependencies {
         return _mapService!
     }
     
+    /// 路径导航服务
+    /// 需求: 1.1, 1.2, 1.3, 1.4
+    var routeNavigationService: RouteNavigationServiceProtocol {
+        if _routeNavigationService == nil {
+            _routeNavigationService = RouteNavigationService()
+        }
+        return _routeNavigationService!
+    }
+    
     private init() {
         // 只初始化轻量级服务
         self.promptProvider = PromptModule()
@@ -65,7 +75,8 @@ class AppDependencies {
         geocodingService: GeocodingService,
         routePlanningService: RoutePlanningService,
         mapService: MapService,
-        repository: TravelPlanRepository
+        repository: TravelPlanRepository,
+        routeNavigationService: RouteNavigationServiceProtocol? = nil
     ) {
         self.promptProvider = promptProvider
         self._aiAgent = aiAgent
@@ -73,5 +84,6 @@ class AppDependencies {
         self._routePlanningService = routePlanningService
         self._mapService = mapService
         self.repository = repository
+        self._routeNavigationService = routeNavigationService
     }
 }
