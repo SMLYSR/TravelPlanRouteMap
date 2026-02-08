@@ -66,7 +66,6 @@
 		9AFC53412F1FDB6E00D1CB8A /* ResultViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFC52F22F1FDB6E00D1CB8A /* ResultViewModel.swift */; };
 		9AFC53522F1FDB6F00D1CB8A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9AFC53062F1FDB6E00D1CB8A /* Assets.xcassets */; };
 		9AFC53532F1FDB6F00D1CB8A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFC53072F1FDB6E00D1CB8A /* ContentView.swift */; };
-		9AFC53552F1FDB6F00D1CB8A /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 9AFC53092F1FDB6E00D1CB8A /* README.md */; };
 		9AFC53562F1FDB6F00D1CB8A /* TravelPlanRouteMapApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFC530A2F1FDB6E00D1CB8A /* TravelPlanRouteMapApp.swift */; };
 		9AFC53572F1FDB6F00D1CB8A /* DataPersistencePropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFC530C2F1FDB6E00D1CB8A /* DataPersistencePropertyTests.swift */; };
 		9AFC53582F1FDB6F00D1CB8A /* InputValidationPropertyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AFC530D2F1FDB6E00D1CB8A /* InputValidationPropertyTests.swift */; };
@@ -542,7 +541,6 @@
 			files = (
 				9AFC53522F1FDB6F00D1CB8A /* Assets.xcassets in Resources */,
 				9AFC532D2F1FDB6E00D1CB8A /* Preview Assets.xcassets in Resources */,
-				9AFC53552F1FDB6F00D1CB8A /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
