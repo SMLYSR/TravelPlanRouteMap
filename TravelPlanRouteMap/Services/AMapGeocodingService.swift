@@ -1,8 +1,29 @@
 import Foundation
 import AMapSearchKit
+import os.log
 
 /// 高德地图地理编码服务实现
 class AMapGeocodingService: NSObject, GeocodingService {
+    
+    // MARK: - Error Handling
+    
+    /// 日志记录器
+    private static let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier ?? "TravelPlanRouteMap",
+        category: "AMapService"
+    )
+    
+    /// 记录错误详情（用于开发调试）
+    private func logError(_ error: Error, context: String) {
+        let nsError = error as NSError
+        Self.logger.error("""
+            Context: \(context)
+            Error Code: \(nsError.code)
+            Domain: \(nsError.domain)
+            Description: \(nsError.localizedDescription)
+            User Info: \(nsError.userInfo)
+            """)
+    }
     
     private var searchAPI: AMapSearchAPI?
     private var geocodeContinuation: CheckedContinuation<[GeocodingResult], Error>?
@@ -24,7 +45,16 @@ class AMapGeocodingService: NSObject, GeocodingService {
     
     func geocode(address: String) async throws -> [GeocodingResult] {
         guard let searchAPI = searchAPI else {
-            throw TravelPlanError.geocodingFailed("搜索服务未初始化，请检查高德地图配置")
+            let error = NSError(
+                domain: "AMapGeocodingService",
+                code: 1800,
+                userInfo: [NSLocalizedDescriptionKey: "搜索服务未初始化，请检查高德地图配置"]
+            )
+            logError(error, context: "地理编码初始化检查")
+            throw TravelPlanError.amapServiceError(
+                code: 1800,
+                message: "搜索服务未初始化，请检查高德地图配置"
+            )
         }
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -38,7 +68,16 @@ class AMapGeocodingService: NSObject, GeocodingService {
     
     func searchPOI(keyword: String, city: String?) async throws -> [POIResult] {
         guard let searchAPI = searchAPI else {
-            throw TravelPlanError.geocodingFailed("搜索服务未初始化，请检查高德地图配置")
+            let error = NSError(
+                domain: "AMapGeocodingService",
+                code: 1800,
+                userInfo: [NSLocalizedDescriptionKey: "搜索服务未初始化，请检查高德地图配置"]
+            )
+            logError(error, context: "POI搜索初始化检查")
+            throw TravelPlanError.amapServiceError(
+                code: 1800,
+                message: "搜索服务未初始化，请检查高德地图配置"
+            )
         }
         
         return try await withCheckedThrowingContinuation { continuation in
@@ -116,18 +155,27 @@ extension AMapGeocodingService: AMapSearchDelegate {
     
     /// 搜索失败回调
     func aMapSearchRequest(_ request: Any!, didFailWithError error: Error!) {
-        print("高德地图搜索失败: \(error.localizedDescription)")
+        // 记录详细错误日志
+        let context = geocodeContinuation != nil ? "地理编码搜索" : "POI搜索"
+        logError(error, context: context)
+        
+        // 将 NSError 转换为自定义错误
+        let nsError = error as NSError
+        let customError = TravelPlanError.amapServiceError(
+            code: nsError.code,
+            message: nsError.localizedDescription
+        )
         
         // 处理地理编码错误
         if let continuation = geocodeContinuation {
             geocodeContinuation = nil
-            continuation.resume(throwing: TravelPlanError.geocodingFailed(error.localizedDescription))
+            continuation.resume(throwing: customError)
         }
         
         // 处理 POI 搜索错误
         if let continuation = poiContinuation {
             poiContinuation = nil
-            continuation.resume(throwing: TravelPlanError.geocodingFailed(error.localizedDescription))
+            continuation.resume(throwing: customError)
         }
     }
 }

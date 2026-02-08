@@ -11,6 +11,7 @@ enum AppColors {
     // 背景和文本
     static let background = Color(hex: "FDF2F8")   // 柔和粉白 - 主背景
     static let text = Color(hex: "1E293B")         // 深灰蓝 - 主要文本
+    static let textSecondary = Color(hex: "6B7280") // 灰色 - 次要文本
     static let border = Color(hex: "E2E8F0")       // 浅灰 - 边框、分隔线
     
     // UIColor 版本（用于 UIKit 组件）
@@ -19,6 +20,7 @@ enum AppColors {
     static let accentUI = UIColor(hex: "EC4899")
     static let backgroundUI = UIColor(hex: "FDF2F8")
     static let textUI = UIColor(hex: "1E293B")
+    static let textSecondaryUI = UIColor(hex: "6B7280")
     static let borderUI = UIColor(hex: "E2E8F0")
 }
 

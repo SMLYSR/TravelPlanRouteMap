@@ -117,4 +117,143 @@ class ResultViewModel: ObservableObject {
         navigationPath = nil
         isSaved = false  // 新增：重置保存状态
     }
+    
+    /// 重新规划路线
+    /// 使用当前景点列表重新调用AI服务生成新的路线规划
+    /// 需求: 3（重新规划功能优化）
+    @MainActor
+    func replanRoute(
+        destination: String,
+        citycode: String?,
+        attractions: [Attraction],
+        travelMode: TravelMode?
+    ) async {
+        // 保存当前计划作为备份
+        let backupPlan = self.travelPlan
+        
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            // 调用AI规划服务
+            let newPlan = try await planningService.planRoute(
+                destination: destination,
+                attractions: attractions,
+                travelMode: travelMode
+            )
+            
+            // 规划导航路线（获取实际道路路径）
+            await planNavigationRoute(
+                attractions: newPlan.route.orderedAttractions,
+                travelMode: travelMode ?? .driving,
+                citycode: citycode
+            )
+            
+            // 更新当前计划（保持相同ID和createdAt）
+            let updatedPlan = TravelPlan(
+                id: backupPlan?.id ?? newPlan.id,
+                destination: newPlan.destination,
+                route: newPlan.route,
+                recommendedDays: newPlan.recommendedDays,
+                accommodations: newPlan.accommodations,
+                totalDistance: newPlan.totalDistance,
+                createdAt: backupPlan?.createdAt ?? Date(),
+                travelMode: newPlan.travelMode,
+                navigationPath: navigationPath
+            )
+            
+            self.travelPlan = updatedPlan
+            
+            // 更新存储（如果是已保存的计划）
+            if backupPlan != nil {
+                try repository.updatePlan(updatedPlan)
+            }
+            
+            HapticFeedback.success()
+            
+        } catch {
+            // 恢复备份计划
+            self.travelPlan = backupPlan
+            
+            // 设置用户友好的错误提示
+            if let travelPlanError = error as? TravelPlanError {
+                self.errorMessage = travelPlanError.errorDescription ?? "重新规划失败，请稍后重试"
+            } else {
+                self.errorMessage = "重新规划失败，请稍后重试"
+            }
+            
+            HapticFeedback.error()
+        }
+        
+        isLoading = false
+    }
+    
+    /// 更新路线（编辑景点后）
+    /// 使用更新后的景点列表重新规划路线
+    /// 需求: 2（历史路线编辑功能）
+    @MainActor
+    func updateRoute(
+        planId: String,
+        destination: String,
+        citycode: String?,
+        attractions: [Attraction],
+        travelMode: TravelMode?
+    ) async {
+        // 保存当前计划作为备份
+        let backupPlan = self.travelPlan
+        
+        isLoading = true
+        errorMessage = nil
+        
+        do {
+            // 调用AI规划服务
+            let newPlan = try await planningService.planRoute(
+                destination: destination,
+                attractions: attractions,
+                travelMode: travelMode
+            )
+            
+            // 规划导航路线（获取实际道路路径）
+            await planNavigationRoute(
+                attractions: newPlan.route.orderedAttractions,
+                travelMode: travelMode ?? .driving,
+                citycode: citycode
+            )
+            
+            // 更新当前计划（保持相同ID和createdAt）
+            let updatedPlan = TravelPlan(
+                id: planId,
+                destination: newPlan.destination,
+                route: newPlan.route,
+                recommendedDays: newPlan.recommendedDays,
+                accommodations: newPlan.accommodations,
+                totalDistance: newPlan.totalDistance,
+                createdAt: backupPlan?.createdAt ?? Date(),
+                travelMode: newPlan.travelMode,
+                navigationPath: navigationPath
+            )
+            
+            self.travelPlan = updatedPlan
+            
+            // 更新存储
+            try repository.updatePlan(updatedPlan)
+            
+            HapticFeedback.success()
+            
+        } catch {
+            // 恢复备份计划
+            self.travelPlan = backupPlan
+            
+            // 设置用户友好的错误提示
+            if let travelPlanError = error as? TravelPlanError {
+                self.errorMessage = travelPlanError.errorDescription ?? "更新路线失败，请稍后重试"
+            } else {
+                self.errorMessage = "更新路线失败，请稍后重试"
+            }
+            
+            HapticFeedback.error()
+        }
+        
+        isLoading = false
+    }
 }

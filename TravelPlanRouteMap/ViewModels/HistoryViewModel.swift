@@ -28,7 +28,8 @@ class HistoryViewModel: ObservableObject {
             plans.removeAll { $0.id == plan.id }
             HapticFeedback.light()
         } catch {
-            errorMessage = "删除失败：\(error.localizedDescription)"
+            // 提供用户友好的错误提示，不暴露技术细节
+            errorMessage = "删除失败，请重试"
             HapticFeedback.error()
         }
     }
@@ -40,7 +41,8 @@ class HistoryViewModel: ObservableObject {
             do {
                 try repository.deletePlan(id: plan.id)
             } catch {
-                errorMessage = "删除失败：\(error.localizedDescription)"
+                // 提供用户友好的错误提示，不暴露技术细节
+                errorMessage = "删除失败，请重试"
                 HapticFeedback.error()
                 return
             }

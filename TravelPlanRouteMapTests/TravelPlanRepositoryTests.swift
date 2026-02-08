@@ -131,6 +131,60 @@ final class TravelPlanRepositoryTests: XCTestCase {
         XCTAssertEqual(retrieved?.recommendedDays, 5)
     }
     
+    // MARK: - 测试更新不存在的计划
+    
+    func testUpdateNonExistentPlan() {
+        // Given
+        let plan = createTestPlan(destination: "北京")
+        
+        // When/Then
+        XCTAssertThrowsError(try repository.updatePlan(plan)) { error in
+            guard let travelPlanError = error as? TravelPlanError else {
+                XCTFail("错误类型应该是 TravelPlanError")
+                return
+            }
+            if case .planNotFound = travelPlanError {
+                // 测试通过
+            } else {
+                XCTFail("错误类型应该是 planNotFound")
+            }
+        }
+    }
+    
+    // MARK: - 测试获取指定ID的计划
+    
+    func testGetPlanById() throws {
+        // Given
+        let plan1 = createTestPlan(destination: "北京")
+        let plan2 = createTestPlan(destination: "上海")
+        let plan3 = createTestPlan(destination: "广州")
+        try repository.savePlan(plan1)
+        try repository.savePlan(plan2)
+        try repository.savePlan(plan3)
+        
+        // When
+        let retrieved = repository.getPlan(id: plan2.id)
+        
+        // Then
+        XCTAssertNotNil(retrieved)
+        XCTAssertEqual(retrieved?.id, plan2.id)
+        XCTAssertEqual(retrieved?.destination, "上海")
+    }
+    
+    // MARK: - 测试获取不存在的计划
+    
+    func testGetNonExistentPlanById() throws {
+        // Given
+        let plan = createTestPlan(destination: "北京")
+        try repository.savePlan(plan)
+        
+        // When
+        let retrieved = repository.getPlan(id: "non-existent-id")
+        
+        // Then
+        XCTAssertNil(retrieved)
+    }
+    
     // MARK: - 测试读取空列表
     
     func testGetAllPlansWhenEmpty() {
